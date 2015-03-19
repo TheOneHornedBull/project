@@ -10,22 +10,20 @@ public class touchInput : MonoBehaviour {
 	
 	void FixedUpdate () {
 
-		Shooting ();
-
 		if (HP <= 0) {
 			Debug.Log("Game over ! You have been defeated.");
 			Time.timeScale = 0;
 		}
 
-		Movement ();
+		MovementAndShooting ();
 	}
 
-	void Movement () {
+	void MovementAndShooting () {
 
 		if (Input.touchCount > 0) {
 			Touch touch = Input.GetTouch (0);
 
-
+			Shooting ();
 
 			if (touch.phase == TouchPhase.Stationary || touch.phase == TouchPhase.Moved || Input.GetMouseButtonDown(0)) {
 				Ray ray;
@@ -50,7 +48,7 @@ public class touchInput : MonoBehaviour {
 	void Shooting () {
 		if (Time.time > nextFire) {
 			nextFire = Time.time + 0.2f;
-			Instantiate (playerBullet, transform.position + new Vector3 (3, 4, 0), transform.rotation);
+			Instantiate (playerBullet, transform.position, transform.rotation);
 			Debug.Log("fire");
 		}
 	} 
