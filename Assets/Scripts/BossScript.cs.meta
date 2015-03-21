@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 6834d058494784c8285bff7deeac2f9f
+timeCreated: 1426795535
+licenseType: Free
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences:
+  - basicAmmo: {fileID: 180950, guid: 840f20c36171442d482654b2ee514e06, type: 2}
+  - arrowAmmo: {fileID: 181214, guid: 138658c785620488488d8d293ee9fb32, type: 2}
+  - spreadShot: {fileID: 159264, guid: 2f3018ae3a4ac4098852b2f0519648d4, type: 2}
+  - consecutiveAmmo: {fileID: 162150, guid: f07da528d14cc49e2bb7eddace0ed50a, type: 2}
+  - buckShotAmmo: {fileID: 100034, guid: 3ee597548412e489cb3860aa025fab13, type: 2}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

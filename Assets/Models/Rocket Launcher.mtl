@@ -1,0 +1,46 @@
+# Blender3D MTL File: Rocket Launcher.blend
+# Material Count: 4
+newmtl Material.017_Wings.pn_Wings.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.137500 0.137500 0.155000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Wings.png
+
+
+newmtl Material.016_Rocket.p_Rocket.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.322500 0.322500 0.390000
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Rocket.png
+
+
+newmtl Material.103_Rocket.p_Rocket.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.637500 0.637500 0.637500
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Rocket.png
+
+
+newmtl Material.104_Wings.pn_Wings.png
+Ns 0.000000
+Ka 0.000000 0.000000 0.000000
+Kd 0.637500 0.637500 0.637500
+Ks 0.000000 0.000000 0.000000
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Wings.png
+
+

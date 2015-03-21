@@ -6,6 +6,10 @@ public class touchInput : MonoBehaviour {
 	private Vector3 touchPoint;
 	private int HP = 120;
 	private float nextFire;
+	private bool useRockets;
+	private float nextRocketFire;
+	private int rocketCount;
+	public GameObject playerRockets;
 	public GameObject playerBullet;
 	
 	void FixedUpdate () {
@@ -49,14 +53,31 @@ public class touchInput : MonoBehaviour {
 		if (Time.time > nextFire) {
 			nextFire = Time.time + 0.2f;
 			Instantiate (playerBullet, transform.position, transform.rotation);
-			Debug.Log("fire");
 		}
+
+		if (Time.time > nextRocketFire && useRockets == true && rocketCount <= 100) {
+			nextRocketFire = Time.time + 0.4f;
+			Instantiate (playerBullet, transform.position, transform.rotation);
+			rocketCount ++;
+		}
+		useRockets = false;
+
 	} 
 
 	void OnTriggerEnter (Collider other){
 		if (other.tag == "enemyBullet") {
 			HP -= 5;
 		}
+
+		if (other.tag == "HPCrate") {
+			HP = HP + HP/2;
+		}
+
+		if (other.tag == "RocketCrate") {
+			useRockets = true;
+			rocketCount = 0;
+		}
+
 	}
 
 	void OnGUI () {

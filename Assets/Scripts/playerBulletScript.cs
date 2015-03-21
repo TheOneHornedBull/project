@@ -7,7 +7,7 @@ public class playerBulletScript : MonoBehaviour {
 		Destroy (gameObject,3);
 	}
 	void OnTriggerEnter (Collider other) {
-		if (other.tag == "boss") {
+		if (other.tag == "boss"||other.tag == "shieldTag") {
 			Destroy (gameObject);
 		}
 	}
