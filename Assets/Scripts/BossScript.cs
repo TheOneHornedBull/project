@@ -17,6 +17,7 @@ public class BossScript : MonoBehaviour {
 	private GameObject leftWing;
 	private GameObject rightWing;
 	private GameObject shield;
+	private GameObject hpFill;
 	public int HP;
 	public float lrTime; // has to be long
 	private Vector3 velocity = Vector3.zero;
@@ -48,6 +49,7 @@ public class BossScript : MonoBehaviour {
 		rightWing = GameObject.Find ("rightWing");
 		shield = GameObject.Find ("Shield");
 		useShield = false;
+		hpFill = GameObject.Find ("Fill");
 //		lwdiff = Shader.Find ("Mobile/Diffuse");
 //		lwadd = Shader.Find ("Mobile/Particles/Additive");
 	}
@@ -68,6 +70,15 @@ public class BossScript : MonoBehaviour {
 		}
 
 		HPSlider.value = HP;
+		if (HP >= 6000) {
+			GetComponent<Renderer> ().material.color = new Color32 (10, 255, 0, 255);
+		}
+		if (HP < 6000 && HP >= 2000) {
+			GetComponent<Renderer> ().material.color = new Color32 (10, 255, 0, 255);
+		}
+		if (HP > 2000) {
+			GetComponent<Renderer> ().material.color = new Color32 (255, 0, 0, 255);
+		}
 		hpText.text = "10000 / " + HP.ToString ();
 		/**
 			if (HP <= 2000){
