@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class BossScript : MonoBehaviour {
@@ -10,6 +11,8 @@ public class BossScript : MonoBehaviour {
 	public GameObject consecutiveAmmo;
 	public GameObject HPCrate;
 	public GameObject rocketCrate;
+	public Slider HPSlider;
+	public Text hpText;
 	//public GameObject doubleDamageCrate;
 	private GameObject leftWing;
 	private GameObject rightWing;
@@ -34,7 +37,7 @@ public class BossScript : MonoBehaviour {
 	 */
 
 	
-	void Start () {
+	void Awake () {
 		StartCoroutine (defaultMovement());
 		StartCoroutine (phases ());
 		HP = 10000;
@@ -63,6 +66,9 @@ public class BossScript : MonoBehaviour {
 			}
 
 		}
+
+		HPSlider.value = HP;
+		hpText.text = "10000 / " + HP.ToString ();
 		/**
 			if (HP <= 2000){
 				if (HP % 100 == 0){
