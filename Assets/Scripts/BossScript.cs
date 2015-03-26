@@ -14,7 +14,7 @@ public class BossScript : MonoBehaviour {
 	private GameObject leftWing;
 	private GameObject rightWing;
 	private GameObject shield;
-	private int HP;
+	public int HP;
 	public float lrTime; // has to be long
 	private Vector3 velocity = Vector3.zero;
 	private int consecutiveAmmCount;
