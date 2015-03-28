@@ -49,7 +49,7 @@ public class BossScript : MonoBehaviour {
 		rightWing = GameObject.Find ("rightWing");
 		shield = GameObject.Find ("Shield");
 		useShield = false;
-		hpFill = GameObject.Find ("Fill");
+		hpFill = GameObject.Find ("BossFill");
 //		lwdiff = Shader.Find ("Mobile/Diffuse");
 //		lwadd = Shader.Find ("Mobile/Particles/Additive");
 	}
@@ -71,13 +71,13 @@ public class BossScript : MonoBehaviour {
 
 		HPSlider.value = HP;
 		if (HP >= 6000) {
-			GetComponent<Renderer> ().material.color = new Color32 (10, 255, 0, 255);
+			hpFill.GetComponent<Image>().color = new Color32 (10, 255, 0, 255);
 		}
 		if (HP < 6000 && HP >= 2000) {
-			GetComponent<Renderer> ().material.color = new Color32 (10, 255, 0, 255);
+			hpFill.GetComponent<Image>().color = new Color32 (255, 180, 40, 255);
 		}
-		if (HP > 2000) {
-			GetComponent<Renderer> ().material.color = new Color32 (255, 0, 0, 255);
+		if (HP < 2000) {
+			hpFill.GetComponent<Image>().color = new Color32 (255, 0, 0, 255);
 		}
 		hpText.text = "10000 / " + HP.ToString ();
 		/**
@@ -263,9 +263,4 @@ public class BossScript : MonoBehaviour {
 			HP -= 35;
 		}
 	}
-	
-	void OnGUI () {
-		GUI.Label(new Rect(10, 10, 100, 20), HP.ToString());
-	}
-	
 }

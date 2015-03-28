@@ -10,6 +10,7 @@ public class playerRocket : MonoBehaviour {
 		Destroy (gameObject, 5);
 	}
 	void FixedUpdate () {
+		transform.LookAt (boss.transform);
 		transform.position = Vector3.SmoothDamp (transform.position, boss.transform.position, ref velocity, 0.5f);
 	}
 
