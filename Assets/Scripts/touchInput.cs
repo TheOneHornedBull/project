@@ -7,7 +7,7 @@ public class touchInput : MonoBehaviour {
 	private Vector3 touchPoint;
 	private int HP = 120;
 	private float nextFire;
-	private bool useRockets;
+	public bool useRockets;
 	private float nextRocketFire;
 	private int rocketCount;
 	private Ray ray;
@@ -21,20 +21,27 @@ public class touchInput : MonoBehaviour {
 	public Text HPText;
 	public GameObject startButton;
 	private Vector3 sparksPosition;
-	[Range(0.1f, 10)]
-	public float maxXSpeed;
+	[Range (0.1f, 10)]
+	public float maxMovSpeed;
 	private Vector3 newPosition;
+	private GameObject playerBody;
 
 	void Awake () {
 		Time.timeScale = 0;
 		rocketCount = 0;
 		isPaused = true;
 		fill = GameObject.Find ("PlayerFill");
+		playerBody = GameObject.Find ("playerBody");
 	}
 	
 	void FixedUpdate () {
 
 		MovementAndShooting ();
+
+		if (HP == 80 || HP == 60 || HP == 30) {
+			StartCoroutine (colorChanger());
+			GetComponent<Animation>().Play();
+		}
 
 		playerHPBar.value = HP;
 		if (HP >= 80) {
@@ -62,8 +69,10 @@ public class touchInput : MonoBehaviour {
 					touchPoint = hit.point;
 				}
 				transform.position = newPosition;
-				float currentSpeed = 0f;
-				newPosition.x = Mathf.SmoothDamp (transform.position.x, touchPoint.x, ref currentSpeed,Time.deltaTime * maxXSpeed);
+				Vector3 currentSpeed = Vector3.zero;
+				//newPosition.x = Mathf.SmoothDamp (transform.position.x, touchPoint.x, ref currentSpeed,Time.deltaTime * maxXSpeed);
+				//newPosition.y = Mathf.SmoothDamp (transform.position.y, touchPoint.y, ref currentSpeed,Time.deltaTime * maxYSpeed);
+				newPosition = Vector3.SmoothDamp (transform.position, new Vector3 (touchPoint.x,touchPoint.y + 1.5f, 0), ref currentSpeed, Time.deltaTime * maxMovSpeed);
 				Shooting();
 			}
 		#endif
@@ -77,7 +86,10 @@ public class touchInput : MonoBehaviour {
 						touchPoint = hit.point;
 					}
 				}
-				transform.position = Vector3.Lerp (transform.position, new Vector3 (touchPoint.x, touchPoint.y + 1.5f, transform.position.z), Time.deltaTime * 6);
+				transform.position = newPosition;
+				float currentSpeed = 0f;
+				newPosition.x = Mathf.SmoothDamp (transform.position.x, touchPoint.x, ref currentSpeed,Time.deltaTime * maxXSpeed);
+				newPosition.y = Mathf.SmoothDamp (transform.position.y, touchPoint.y, ref currentSpeed,Time.deltaTime * maxYSpeed);
 			}
 		#endif
 	}
@@ -100,22 +112,6 @@ public class touchInput : MonoBehaviour {
 	void OnTriggerEnter (Collider other){
 		if (other.tag == "enemyBullet") {
 			HP -= 5;
-			/**
-			switch (Random.Range(1,5)){
-			case (Random.Range(1,5) == 1):
-				sparksPosition = new Vector3 (0.5f,-1,0);
-				break;
-			case (Random.Range(1,5) == 2):
-				sparksPosition = new Vector3 (-0.5f,-1,0);
-				break;
-			case (Random.Range(1,5) == 3):
-				sparksPosition = new Vector3 (0.15f,0.45f,0);
-				break;
-			case (Random.Range(1,5) == 4):
-				sparksPosition = new Vector3 (-0.5f,0.25f,0);
-				break;
-			}
-			*/
 
 			if (Random.Range(1,5) == 1) {
 				sparksPosition = new Vector3 (0.5f,-1,0);
@@ -145,19 +141,23 @@ public class touchInput : MonoBehaviour {
 		}
 
 	}
-	/**
-	void OnTriggerStay (Collider other){
-		if (other.tag == "MainCamera") {
-			MovementAndShooting();
-		}
+
+	IEnumerator colorChanger () {
+		playerBody.GetComponent<Renderer>().material.color = new Color32(255,75,75,255);
+		yield return new WaitForSeconds (0.3f);
+		playerBody.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		yield return new WaitForSeconds (0.3f);
+		playerBody.GetComponent<Renderer>().material.color = new Color32(255,75,75,255);
+		yield return new WaitForSeconds (0.3f);
+		playerBody.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		yield return new WaitForSeconds (0.3f);
+		playerBody.GetComponent<Renderer>().material.color = new Color32(255,75,75,255);
+		yield return new WaitForSeconds (0.3f);
+		playerBody.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		yield return new WaitForSeconds (0.3f);
+		StopCoroutine (colorChanger ());
 	}
 
-	void OnTriggerExit (Collider other){
-		if (other.tag == "MainCamera" ) {
-			GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
-		}
-	}
-	*/
 	public void Play () {
 		Time.timeScale = 1;
 		isPaused = false;

@@ -12,6 +12,7 @@ public class BossScript : MonoBehaviour {
 	public GameObject HPCrate;
 	public GameObject rocketCrate;
 	public GameObject sparks;
+	public GameObject explosion;
 	public Slider HPSlider;
 	public Text hpText;
 	//public GameObject doubleDamageCrate;
@@ -32,12 +33,6 @@ public class BossScript : MonoBehaviour {
 	private float basicNextFire;
 	private Vector3 nextPosition;
 	private Vector3 sparksPosition;
-	/**
-		private Shader lwdiff;
-		private Shader lwadd;
-		private Shader rwdiff;
-		private Shader rwadd;
-	 */
 
 	
 	void Awake () {
@@ -52,8 +47,6 @@ public class BossScript : MonoBehaviour {
 		shield = GameObject.Find ("Shield");
 		useShield = false;
 		hpFill = GameObject.Find ("BossFill");
-//		lwdiff = Shader.Find ("Mobile/Diffuse");
-//		lwadd = Shader.Find ("Mobile/Particles/Additive");
 	}
 	
 	void FixedUpdate () {
@@ -61,8 +54,10 @@ public class BossScript : MonoBehaviour {
 		basicAttack ();
 		shieldOnOff ();
 
-		if (HP == 1000 || HP == 2000 || HP == 3000 || HP == 4000 || HP == 5000 || HP == 7000 || HP == 9000) {
+		if (HP == 1000 || HP == 2000 || HP == 3000 || HP == 4000 || HP == 5000 || HP == 6000 || HP == 7000 || HP == 9000) {
 			HP -= 10;
+			StartCoroutine (colorChanger());
+			GetComponent<Animation>().Play();
 			if (Random.Range (1,5) <= 2){
 				Instantiate (HPCrate, transform.position, transform.rotation);
 			}else {
@@ -221,6 +216,42 @@ public class BossScript : MonoBehaviour {
 			}
 		}
 
+	IEnumerator colorChanger () {
+		leftWing.GetComponent<Renderer>().material.color = new Color32(255,75,75,255);
+		rightWing.GetComponent<Renderer>().material.color = new Color32(255,75,75,255);
+		GetComponent<Renderer>().material.color = new Color32(255,75,75,255);
+		yield return new WaitForSeconds (0.3f);
+		leftWing.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		rightWing.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		yield return new WaitForSeconds (0.3f);
+		leftWing.GetComponent<Renderer>().material.color = new Color32(255,75,75,255);
+		rightWing.GetComponent<Renderer>().material.color = new Color32(255,75,75,255);
+		GetComponent<Renderer>().material.color = new Color32(255,75,75,255);
+		yield return new WaitForSeconds (0.3f);
+		leftWing.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		rightWing.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		yield return new WaitForSeconds (0.3f);
+		leftWing.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		rightWing.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		yield return new WaitForSeconds (0.3f);
+		leftWing.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		rightWing.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		yield return new WaitForSeconds (0.3f);
+		leftWing.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		rightWing.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		yield return new WaitForSeconds (0.3f);
+		leftWing.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		rightWing.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
+		yield return new WaitForSeconds (0.3f);
+		StopCoroutine (colorChanger());
+	}
+
 	IEnumerator GetOut () {
 		StopCoroutine (defaultMovement());
 		StopCoroutine (phases());
@@ -263,16 +294,16 @@ public class BossScript : MonoBehaviour {
 				sparksPosition = new Vector3 (2.5f,-0.2f,0);
 			}
 			if (Random.Range(1,10) == 2){
-				sparksPosition = new Vector3 (2.9f,1.6f,0);
+				sparksPosition = new Vector3 (2.9f,1f,0);
 			}
 			if (Random.Range(1,10) == 3){
 				sparksPosition = new Vector3 (1.1f,1.45f,0);
 			}
 			if (Random.Range(1,10) == 4){
-				sparksPosition = new Vector3 (-1.1f,1.25f,0);
+				sparksPosition = new Vector3 (-1.1f,1f,0);
 			}
 			if (Random.Range(1,10) == 5){
-				sparksPosition = new Vector3 (0.15f,-0.75f,0);
+				sparksPosition = new Vector3 (0,-0.75f,0);
 			}
 			if (Random.Range(1,10) == 6){
 				sparksPosition = new Vector3 (-0.2f,-2.5f,0);
@@ -290,7 +321,37 @@ public class BossScript : MonoBehaviour {
 		}
 
 		if (other.tag == "playerRocket") {
-			HP -= 35;
+			if (Random.Range(1,10) == 1) {
+				sparksPosition = new Vector3 (2.5f,-0.2f,0);
+			}
+			if (Random.Range(1,10) == 2){
+				sparksPosition = new Vector3 (2.9f,1f,0);
+			}
+			if (Random.Range(1,10) == 3){
+				sparksPosition = new Vector3 (1.1f,1.45f,0);
+			}
+			if (Random.Range(1,10) == 4){
+				sparksPosition = new Vector3 (-1.1f,1f,0);
+			}
+			if (Random.Range(1,10) == 5){
+				sparksPosition = new Vector3 (0,-0.75f,0);
+			}
+			if (Random.Range(1,10) == 6){
+				sparksPosition = new Vector3 (-0.2f,-2.5f,0);
+			}
+			if (Random.Range(1,10) == 7){
+				sparksPosition = new Vector3 (-2.8f,1.6f,0);
+			}
+			if (Random.Range(1,10) == 8){
+				sparksPosition = new Vector3 (-2.31f,-0.5f,0);
+			}
+			if (Random.Range(1,10) == 9){
+				sparksPosition = new Vector3 (-0.6f,0.25f,0);
+			}
+			Instantiate(explosion, sparksPosition + transform.position,transform.rotation);
+
+			HP -= 20;
+
 		}
 	}
 }

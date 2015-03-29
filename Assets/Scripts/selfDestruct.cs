@@ -2,7 +2,8 @@
 using System.Collections;
 
 public class selfDestruct : MonoBehaviour {
+	public float a=5;
 	void Start () {
-		Destroy (gameObject,5);
+		Destroy (gameObject,a);
 	}
 }
