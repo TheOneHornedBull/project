@@ -16,13 +16,13 @@ public class touchInput : MonoBehaviour {
 	private bool isPaused;
 	public GameObject playerRockets;
 	public GameObject playerBullet;
+	public GameObject sparks;
 	public Slider playerHPBar;
 	public Text HPText;
 	public GameObject startButton;
+	private Vector3 sparksPosition;
 	[Range(0.1f, 10)]
 	public float maxXSpeed;
-	[Range(0.1f, 10)]
-	public float maxYSpeed;
 	private Vector3 newPosition;
 
 	void Awake () {
@@ -64,7 +64,6 @@ public class touchInput : MonoBehaviour {
 				transform.position = newPosition;
 				float currentSpeed = 0f;
 				newPosition.x = Mathf.SmoothDamp (transform.position.x, touchPoint.x, ref currentSpeed,Time.deltaTime * maxXSpeed);
-				newPosition.y = Mathf.SmoothDamp (transform.position.y, touchPoint.y, ref currentSpeed,Time.deltaTime * maxYSpeed);
 				Shooting();
 			}
 		#endif
@@ -101,10 +100,43 @@ public class touchInput : MonoBehaviour {
 	void OnTriggerEnter (Collider other){
 		if (other.tag == "enemyBullet") {
 			HP -= 5;
+			/**
+			switch (Random.Range(1,5)){
+			case (Random.Range(1,5) == 1):
+				sparksPosition = new Vector3 (0.5f,-1,0);
+				break;
+			case (Random.Range(1,5) == 2):
+				sparksPosition = new Vector3 (-0.5f,-1,0);
+				break;
+			case (Random.Range(1,5) == 3):
+				sparksPosition = new Vector3 (0.15f,0.45f,0);
+				break;
+			case (Random.Range(1,5) == 4):
+				sparksPosition = new Vector3 (-0.5f,0.25f,0);
+				break;
+			}
+			*/
+
+			if (Random.Range(1,5) == 1) {
+				sparksPosition = new Vector3 (0.5f,-1,0);
+			}
+			if (Random.Range(1,5) == 2){
+				sparksPosition = new Vector3 (-0.5f,-1,0);
+			}
+			if (Random.Range(1,5) == 3){
+				sparksPosition = new Vector3 (0.15f,0.45f,0);
+			}
+			if (Random.Range(1,5) == 4){
+				sparksPosition = new Vector3 (-0.5f,0.25f,0);
+			}
+			Instantiate(sparks, sparksPosition + transform.position,transform.rotation);
 		}
 
 		if (other.tag == "HPCrate") {
 			HP = HP + HP/2;
+			if (HP > 120){
+				HP = 120;
+			}
 		}
 
 		if (other.tag == "RocketCrate") {

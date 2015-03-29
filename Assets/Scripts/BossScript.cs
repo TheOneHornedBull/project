@@ -11,6 +11,7 @@ public class BossScript : MonoBehaviour {
 	public GameObject consecutiveAmmo;
 	public GameObject HPCrate;
 	public GameObject rocketCrate;
+	public GameObject sparks;
 	public Slider HPSlider;
 	public Text hpText;
 	//public GameObject doubleDamageCrate;
@@ -30,6 +31,7 @@ public class BossScript : MonoBehaviour {
 	private float previousAttack;
 	private float basicNextFire;
 	private Vector3 nextPosition;
+	private Vector3 sparksPosition;
 	/**
 		private Shader lwdiff;
 		private Shader lwadd;
@@ -257,6 +259,34 @@ public class BossScript : MonoBehaviour {
 	void OnTriggerEnter (Collider other){
 		if (other.tag == "playerBullet") {
 			HP -= 10;
+			if (Random.Range(1,10) == 1) {
+				sparksPosition = new Vector3 (2.5f,-0.2f,0);
+			}
+			if (Random.Range(1,10) == 2){
+				sparksPosition = new Vector3 (2.9f,1.6f,0);
+			}
+			if (Random.Range(1,10) == 3){
+				sparksPosition = new Vector3 (1.1f,1.45f,0);
+			}
+			if (Random.Range(1,10) == 4){
+				sparksPosition = new Vector3 (-1.1f,1.25f,0);
+			}
+			if (Random.Range(1,10) == 5){
+				sparksPosition = new Vector3 (0.15f,-0.75f,0);
+			}
+			if (Random.Range(1,10) == 6){
+				sparksPosition = new Vector3 (-0.2f,-2.5f,0);
+			}
+			if (Random.Range(1,10) == 7){
+				sparksPosition = new Vector3 (-2.8f,1.6f,0);
+			}
+			if (Random.Range(1,10) == 8){
+				sparksPosition = new Vector3 (-2.31f,-0.5f,0);
+			}
+			if (Random.Range(1,10) == 9){
+				sparksPosition = new Vector3 (-0.6f,0.25f,0);
+			}
+			Instantiate(sparks, sparksPosition + transform.position,transform.rotation);
 		}
 
 		if (other.tag == "playerRocket") {
