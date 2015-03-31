@@ -70,8 +70,6 @@ public class touchInput : MonoBehaviour {
 				}
 				transform.position = newPosition;
 				Vector3 currentSpeed = Vector3.zero;
-				//newPosition.x = Mathf.SmoothDamp (transform.position.x, touchPoint.x, ref currentSpeed,Time.deltaTime * maxXSpeed);
-				//newPosition.y = Mathf.SmoothDamp (transform.position.y, touchPoint.y, ref currentSpeed,Time.deltaTime * maxYSpeed);
 				newPosition = Vector3.SmoothDamp (transform.position, new Vector3 (touchPoint.x,touchPoint.y + 1.5f, 0), ref currentSpeed, Time.deltaTime * maxMovSpeed);
 				Shooting();
 			}
@@ -87,9 +85,8 @@ public class touchInput : MonoBehaviour {
 					}
 				}
 				transform.position = newPosition;
-				float currentSpeed = 0f;
-				newPosition.x = Mathf.SmoothDamp (transform.position.x, touchPoint.x, ref currentSpeed,Time.deltaTime * maxXSpeed);
-				newPosition.y = Mathf.SmoothDamp (transform.position.y, touchPoint.y, ref currentSpeed,Time.deltaTime * maxYSpeed);
+				Vector3 currentSpeed = Vector3.zero;
+				newPosition = Vector3.SmoothDamp (transform.position, new Vector3(touchPoint.x, touchPoint.y + 1.5f, 0), ref currentSpeed,Time.deltaTime * maxMovSpeed);
 			}
 		#endif
 	}
