@@ -25,8 +25,10 @@ public class touchInput : MonoBehaviour {
 	public float maxMovSpeed;
 	private Vector3 newPosition;
 	private GameObject playerBody;
+	private Animator anim;
 
 	void Awake () {
+		anim = GetComponent <Animator> ();
 		Time.timeScale = 0;
 		rocketCount = 0;
 		isPaused = true;
@@ -39,8 +41,9 @@ public class touchInput : MonoBehaviour {
 		MovementAndShooting ();
 
 		if (HP == 80 || HP == 60 || HP == 30) {
+			HP -= 5;
+			anim.SetBool ("playerShake",true);
 			StartCoroutine (colorChanger());
-			GetComponent<Animation>().Play();
 		}
 
 		playerHPBar.value = HP;
@@ -70,7 +73,9 @@ public class touchInput : MonoBehaviour {
 				}
 				transform.position = newPosition;
 				Vector3 currentSpeed = Vector3.zero;
-				newPosition = Vector3.SmoothDamp (transform.position, new Vector3 (touchPoint.x,touchPoint.y + 1.5f, 0), ref currentSpeed, Time.deltaTime * maxMovSpeed);
+				//if (hit.collider.tag == "tapPlaneTag"){
+					newPosition = Vector3.SmoothDamp (transform.position, new Vector3 (touchPoint.x,touchPoint.y + 1f, 0), ref currentSpeed, Time.deltaTime * maxMovSpeed);
+			//	}
 				Shooting();
 			}
 		#endif
@@ -86,7 +91,9 @@ public class touchInput : MonoBehaviour {
 				}
 				transform.position = newPosition;
 				Vector3 currentSpeed = Vector3.zero;
-				newPosition = Vector3.SmoothDamp (transform.position, new Vector3(touchPoint.x, touchPoint.y + 1.5f, 0), ref currentSpeed,Time.deltaTime * maxMovSpeed);
+			//	if (hit.collider.tag == "tapPlaneTag"){
+					newPosition = Vector3.SmoothDamp (transform.position, new Vector3(touchPoint.x, touchPoint.y + 1f, 0), ref currentSpeed,Time.deltaTime * maxMovSpeed);
+			//	}
 			}
 		#endif
 	}
@@ -141,17 +148,17 @@ public class touchInput : MonoBehaviour {
 
 	IEnumerator colorChanger () {
 		playerBody.GetComponent<Renderer>().material.color = new Color32(255,75,75,255);
-		yield return new WaitForSeconds (0.3f);
+		yield return new WaitForSeconds (0.1f);
 		playerBody.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
-		yield return new WaitForSeconds (0.3f);
+		yield return new WaitForSeconds (0.1f);
 		playerBody.GetComponent<Renderer>().material.color = new Color32(255,75,75,255);
-		yield return new WaitForSeconds (0.3f);
+		yield return new WaitForSeconds (0.1f);
 		playerBody.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
-		yield return new WaitForSeconds (0.3f);
+		yield return new WaitForSeconds (0.1f);
 		playerBody.GetComponent<Renderer>().material.color = new Color32(255,75,75,255);
-		yield return new WaitForSeconds (0.3f);
+		yield return new WaitForSeconds (0.1f);
 		playerBody.GetComponent<Renderer>().material.color = new Color32(255,255,255,255);
-		yield return new WaitForSeconds (0.3f);
+		yield return new WaitForSeconds (0.1f);
 		StopCoroutine (colorChanger ());
 	}
 

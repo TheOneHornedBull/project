@@ -33,11 +33,14 @@ public class BossScript : MonoBehaviour {
 	private float basicNextFire;
 	private Vector3 nextPosition;
 	private Vector3 sparksPosition;
+	private Animator anim;
+
 
 	
 	void Awake () {
 		StartCoroutine (defaultMovement());
 		StartCoroutine (phases ());
+		anim = GetComponent<Animator> ();
 		HP = 10000;
 		stop = false;
 		useShield = false;
@@ -56,8 +59,8 @@ public class BossScript : MonoBehaviour {
 
 		if (HP == 1000 || HP == 2000 || HP == 3000 || HP == 4000 || HP == 5000 || HP == 6000 || HP == 7000 || HP == 9000) {
 			HP -= 10;
+			anim.SetBool ("bossShake",true);
 			StartCoroutine (colorChanger());
-			GetComponent<Animation>().Play();
 			if (Random.Range (1,5) <= 2){
 				Instantiate (HPCrate, transform.position, transform.rotation);
 			}else {
