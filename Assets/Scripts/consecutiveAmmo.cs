@@ -3,13 +3,14 @@ using System.Collections;
 
 public class consecutiveAmmo : MonoBehaviour {
 	public GameObject ammo;
-	private int count = 0;
-	private Quaternion additionalRotation = Quaternion.Euler (0,0,1.5f);
+	public int count;
+	public int maxCount = 30;
+	public Quaternion additionalRotation = new Quaternion.Euler (0,0,1.5f);
 	private float nextFire;
 	private float fireRate;
 
 	void FixedUpdate () {
-		if (count <= 70 && Time.time > nextFire){
+		if (count <= maxCount && Time.time > nextFire){
 			nextFire = Time.time + 0.1f;
 			Instantiate(ammo, transform.position - new Vector3 (2.7f, -1,0), transform.rotation);
 			Instantiate(ammo, transform.position + new Vector3 (2.7f, -1,0), transform.rotation);
