@@ -67,13 +67,13 @@ public class BossScript : MonoBehaviour {
 			hpFill.GetComponent<Image>().color = new Color32 (255, 0, 0, 255);
 		}
 		hpText.text = "10000 / " + HP.ToString ();
-		if(HP % 1000 == 0){
+		if(HP % 1000 == 0 && HP != 10000){
 			if(Random.Range(1,3) == 1){
 				Instantiate(bossShooting.HPCrate,transform.position,transform.rotation);
-			}
-			if(Random.Range(1,3)>1){
+			}else if(Random.Range(1,3)>1){
 				Instantiate(bossShooting.rocketCrate, transform.position, transform.rotation);
 			}
+			HP -= 10;
 		}
 		if (HP <= 0) {
 			leftWing.GetComponent<Rigidbody>().velocity = Random.insideUnitSphere;
@@ -156,7 +156,7 @@ public class BossScript : MonoBehaviour {
 			doArrowAttack = false;
 			useShield = false;
 			bossMovement.moveDefault = false;
-			bossMovement.maxSpeed = 7;
+			bossMovement.maxSpeed = 10;
 			bossMovement.nextPosition = new Vector3 (0,20,0);
 			bossMovement.timeToReachTarget = 2;
 			yield return new WaitForSeconds (0.5f);

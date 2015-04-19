@@ -4,7 +4,7 @@ using System.Collections;
 
 public class touchInput : MonoBehaviour {
 	private Vector3 touchPoint;
-	private int HP = 120;
+	private int HP = 300;
 	private float nextFire;
 	public bool useRockets;
 	private float nextRocketFire;
@@ -49,23 +49,23 @@ public class touchInput : MonoBehaviour {
 
 		MovementAndShooting ();
 
-		if (HP == 80 || HP == 60 || HP == 30) {
+		if (HP == 200 || HP == 150 || HP == 100 || HP == 50) {
 			HP -= 5;
 			anim.SetBool ("playerShake",true);
 			StartCoroutine (colorChanger());
 		}
 
 		playerHPBar.value = HP;
-		if (HP >= 80) {
+		if (HP >= 200) {
 			fill.GetComponent<Image>().color = new Color32 (10, 255, 0, 255);
 		}
-		if (HP < 80 && HP >= 30) {
+		if (HP < 150 && HP >= 50) {
 			fill.GetComponent<Image>().color = new Color32 (255, 180, 40, 255);
 		}
-		if (HP < 30) {
+		if (HP < 50) {
 			fill.GetComponent<Image>().color = new Color32 (255, 0, 0, 255);
 		}
-		HPText.text = "120 / " + HP.ToString ();
+		HPText.text = "300 / " + HP.ToString ();
 		if (HP <= 0) {
 			Debug.Log("Game over ! You have been defeated.");
 			Time.timeScale = 0;
@@ -142,7 +142,6 @@ public class touchInput : MonoBehaviour {
 			nextRocketFire = Time.time + 0.4f;
 			Instantiate (playerRockets, transform.position, transform.rotation);
 			rocketCount ++;
-			Debug.Log("Rocket");
 		}
 
 	} 
@@ -167,9 +166,9 @@ public class touchInput : MonoBehaviour {
 		}
 
 		if (other.tag == "HPCrate") {
-			HP = HP + HP/2;
-			if (HP > 120){
-				HP = 120;
+			HP += HP/2;
+			if (HP > 300){
+				HP = 300;
 			}
 		}
 

@@ -5,7 +5,7 @@ public class consecutiveAmmo : MonoBehaviour {
 	public GameObject ammo;
 	public int count;
 	public int maxCount = 30;
-	public Quaternion additionalRotation = new Quaternion.Euler (0,0,1.5f);
+	public Quaternion additionalRotation = Quaternion.Euler (0,0,1.5f);
 	private float nextFire;
 	private float fireRate;
 

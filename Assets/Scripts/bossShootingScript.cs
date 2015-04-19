@@ -5,7 +5,12 @@ public class bossShootingScript : MonoBehaviour {
 	public GameObject basicAmmo;
 	public GameObject arrowAmmo;
 	public GameObject spreadShot;
-	public GameObject buckShotAmmo;
+	public GameObject farLeftLBS;
+	public GameObject farLeftRBS;
+	public GameObject farRightLBS;
+	public GameObject farRightRBS;
+	public GameObject middleLBS;
+	public GameObject middleRBS;
 	public GameObject consecutiveAmmo;
 	public GameObject sparks;
 	public GameObject explosion;
@@ -22,7 +27,7 @@ public class bossShootingScript : MonoBehaviour {
 
 	public IEnumerator basicAttack(float _basicShotRate, int _basicAttackNumber){
 		for(int i=0; i <= _basicAttackNumber; i++) {
-			Instantiate(basicAmmo, transform.position - new Vector3 (2.7f, -1,0), transform.rotation);
+			Instantiate(basicAmmo, transform.position - new Vector3 (2.7f, 1,0), transform.rotation);
 			Instantiate(basicAmmo, transform.position + new Vector3 (2.7f, -1,0), transform.rotation);
 			yield return new WaitForSeconds (_basicShotRate);
 		}
@@ -38,7 +43,7 @@ public class bossShootingScript : MonoBehaviour {
 
 	public IEnumerator spreadShotAttack (float _spreadShotRate, int _spreadShotNumber) {
 		for (int i =0; i <= _spreadShotNumber; i ++){
-			Instantiate (spreadShot, transform.position - new Vector3 (2.7f, -1,0),transform.rotation);
+			Instantiate (spreadShot, transform.position - new Vector3 (2.7f, 1,0),transform.rotation);
 			Instantiate (spreadShot, transform.position + new Vector3 (2.7f, -1,0),transform.rotation);
 			yield return new WaitForSeconds (_spreadShotRate);
 		}
@@ -46,11 +51,29 @@ public class bossShootingScript : MonoBehaviour {
 	}
 
 	public IEnumerator buckShotAttack (float _buckShotRate, int _buckShotNumber){
-		for (int i =0; i <= _buckShotNumber; i ++){
-			Instantiate (buckShotAmmo, transform.position - new Vector3 (2.7f, -1,0),transform.rotation);
-			Instantiate (buckShotAmmo, transform.position + new Vector3 (2.7f, -1,0),transform.rotation);
-			yield return new WaitForSeconds (_buckShotRate);
+		if (Random.Range (1,4) == 1) {
+			Debug.Log ("LeftBS");
+			for (int i =0; i <= _buckShotNumber; i ++) {
+				Instantiate (farLeftLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
+				Instantiate (farLeftRBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
+				yield return new WaitForSeconds (_buckShotRate);
+			}
+		} else if (Random.Range (1,4) == 2) {
+			Debug.Log ("RightBS");
+			for (int i =0; i <= _buckShotNumber; i ++) {
+				Instantiate (farRightLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
+				Instantiate (farRightRBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
+				yield return new WaitForSeconds (_buckShotRate);
+			}
+		} else if (Random.Range (1,4) >= 3) {
+			Debug.Log ("middleBS");
+			for (int i =0; i <= _buckShotNumber; i ++){
+				Instantiate (middleLBS, transform.position - new Vector3 (2.7f, 1,0),transform.rotation);
+				Instantiate (middleRBS, transform.position + new Vector3 (2.7f, -1,0),transform.rotation);
+				yield return new WaitForSeconds (_buckShotRate);
+			}
 		}
+
 		yield return new WaitForSeconds (1);
 	}
 	
