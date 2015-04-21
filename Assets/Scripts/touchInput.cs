@@ -4,6 +4,7 @@ using System.Collections;
 
 public class touchInput : MonoBehaviour {
 	private Vector3 touchPoint;
+	private Quaternion startRotation;
 	private int HP = 300;
 	private float nextFire;
 	public bool useRockets;
@@ -39,6 +40,7 @@ public class touchInput : MonoBehaviour {
 		fill = GameObject.Find ("PlayerFill");
 		playerBody = GameObject.Find ("playerBody");
 		maxMovSpeed = Mathf.Max (maxMovSpeed, 0.1f);
+		startRotation = transform.rotation;
 	}
 	
 	void FixedUpdate () {
@@ -58,11 +60,9 @@ public class touchInput : MonoBehaviour {
 		playerHPBar.value = HP;
 		if (HP >= 200) {
 			fill.GetComponent<Image>().color = new Color32 (10, 255, 0, 255);
-		}
-		if (HP < 150 && HP >= 50) {
+		}else if (HP < 150 && HP >= 50) {
 			fill.GetComponent<Image>().color = new Color32 (255, 180, 40, 255);
-		}
-		if (HP < 50) {
+		}else if (HP < 50) {
 			fill.GetComponent<Image>().color = new Color32 (255, 0, 0, 255);
 		}
 		HPText.text = "300 / " + HP.ToString ();
@@ -91,11 +91,13 @@ public class touchInput : MonoBehaviour {
 					moveTorwards = false;
 				}
 				Shooting();
-			}
+		}
 		if (Input.GetMouseButtonUp(0)){
 			if(currentSpeed >= 1){
-				currentSpeed = 1;
+				currentSpeed = 0.5f;
 				speedLimit = 0;
+				//currentSpeed = Mathf.Lerp (currentSpeed, 1, Time.deltaTime * 10);
+				//speedLimit = Mathf.Lerp (speedLimit, 0, Time.deltaTime * 10);
 			}
 		}
 		#endif
@@ -124,8 +126,10 @@ public class touchInput : MonoBehaviour {
 			Touch touch = Input.GetTouch (0);
 			if(touch.phase == TouchPhase.Canceled || touch.phase == TouchPhase.Ended){
 				if(currentSpeed >= 1){
-					currentSpeed = 1;
+					currentSpeed = 0.5f;
 					speedLimit = 0;
+					//currentSpeed = Mathf.Lerp (currentSpeed, 1, Time.deltaTime);
+					//speedLimit = Mathf.Lerp (speedLimit, 0, Time.deltaTime);
 				}
 			}
 		}

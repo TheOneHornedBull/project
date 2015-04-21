@@ -16,6 +16,7 @@ public class bossShootingScript : MonoBehaviour {
 	public GameObject explosion;
 	public GameObject HPCrate;
 	public GameObject rocketCrate;
+	consecutiveAmmo consAmmScript;
 	private int consecutiveAmmCount;
 	private bool doBasicAttack;
 	private bool doConsecutiveAttack;
@@ -24,6 +25,10 @@ public class bossShootingScript : MonoBehaviour {
 	private float basicNextFire;
 	private Vector3 nextPosition;
 	private Vector3 sparksPosition;
+
+	void Start () {
+		consAmmScript = GetComponent<consecutiveAmmo>();
+	}
 
 	public IEnumerator basicAttack(float _basicShotRate, int _basicAttackNumber){
 		for(int i=0; i <= _basicAttackNumber; i++) {
@@ -52,21 +57,18 @@ public class bossShootingScript : MonoBehaviour {
 
 	public IEnumerator buckShotAttack (float _buckShotRate, int _buckShotNumber){
 		if (Random.Range (1,4) == 1) {
-			Debug.Log ("LeftBS");
 			for (int i =0; i <= _buckShotNumber; i ++) {
 				Instantiate (farLeftLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
 				Instantiate (farLeftRBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
 				yield return new WaitForSeconds (_buckShotRate);
 			}
 		} else if (Random.Range (1,4) == 2) {
-			Debug.Log ("RightBS");
 			for (int i =0; i <= _buckShotNumber; i ++) {
 				Instantiate (farRightLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
 				Instantiate (farRightRBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
 				yield return new WaitForSeconds (_buckShotRate);
 			}
-		} else if (Random.Range (1,4) >= 3) {
-			Debug.Log ("middleBS");
+		} else {
 			for (int i =0; i <= _buckShotNumber; i ++){
 				Instantiate (middleLBS, transform.position - new Vector3 (2.7f, 1,0),transform.rotation);
 				Instantiate (middleRBS, transform.position + new Vector3 (2.7f, -1,0),transform.rotation);
@@ -76,11 +78,4 @@ public class bossShootingScript : MonoBehaviour {
 
 		yield return new WaitForSeconds (1);
 	}
-	
-	public IEnumerator consecutiveAttack (float _consecutiveAttackRate) {
-		Instantiate (consecutiveAmmo, transform.position, transform.rotation);
-		yield return new WaitForSeconds (1);
-	}
-	 
-
 }

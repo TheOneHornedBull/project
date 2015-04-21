@@ -8,6 +8,7 @@ public class BossScript : MonoBehaviour {
 	public Text hpText;
 	public Slider HPSlider;
 	public float defaultWaitBeforeChangeDirection;
+	public GameObject consecAttAmmo;
 	private GameObject leftWing;
 	private GameObject rightWing;
 	private GameObject shield;
@@ -28,18 +29,24 @@ public class BossScript : MonoBehaviour {
 	public bool doSpreadShotAttack;
 	public bool doConsecutiveAttack;
 	public bool useShield;
+	public bool doConsAnimS;
+	public bool doConsAnimB;
 	private Animator anim;
 	bossShootingScript bossShooting;
 	bossMovementScript bossMovement;
+	consecutiveAmmo CA;
 	private int basicAttacksStarted=0;
 	private int arrowAttacksStarted=0;
 	private int spreadAttacksStarted=0;
 	private int buckAttacksStarted=0;
 	private int consecutiveAttacksStarted=0;
+	public int loopsDone=0;
+	Quaternion a;
 
 	void Awake () {
 		bossShooting = GetComponent<bossShootingScript> ();
 		bossMovement = GetComponent<bossMovementScript> ();
+		CA = consecAttAmmo.GetComponent<consecutiveAmmo> ();
 		StartCoroutine (shootingPhasesController());
 		anim = GetComponent<Animator> ();
 		HP = 10000;
@@ -70,7 +77,7 @@ public class BossScript : MonoBehaviour {
 		if(HP % 1000 == 0 && HP != 10000){
 			if(Random.Range(1,3) == 1){
 				Instantiate(bossShooting.HPCrate,transform.position,transform.rotation);
-			}else if(Random.Range(1,3)>1){
+			}else if(Random.Range(1,3) == 2){
 				Instantiate(bossShooting.rocketCrate, transform.position, transform.rotation);
 			}
 			HP -= 10;
@@ -173,15 +180,65 @@ public class BossScript : MonoBehaviour {
 			bossMovement.moveDefault = false;
 			bossMovement.maxSpeed = 15;
 			bossMovement.nextPosition = new Vector3 (0,20,0);
-			yield return new WaitForSeconds (0.5f);
+			yield return new WaitForSeconds (0.8f);
 			bossMovement.move = false;
 			doBuckShotAttack = true;
 			yield return new WaitForSeconds (buckShotRate * buckShotNumber + 0.5f);
 			doBuckShotAttack = false;
 			bossMovement.move = true;
-			bossMovement.maxSpeed = 5;
-			bossMovement.moveDefault = true;
-			Debug.Log("end of cycle");
+			bossMovement.maxSpeed = 30;
+			loopsDone ++;
+			if (loopsDone >= 2){
+					if (Random.Range (1,3) == 1){
+						bossMovement.nextPosition = new Vector3 (6,20,0);
+						yield return new WaitForSeconds (0.6f);
+						bossMovement.move = false;
+						CA.attackRight = true;
+						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0,0,-45));
+						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 0.5f);
+						CA.attackRight = false;
+						bossMovement.nextPosition = new Vector3 (-6,20,0);
+						bossMovement.move = true;
+						yield return new WaitForSeconds (1.2f);
+						bossMovement.move = false;
+						CA.attackLeft = true;
+						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0,0,45));
+						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 0.5f);
+						CA.attackLeft = false;
+						bossMovement.nextPosition = new Vector3 (6,20,0);
+						bossMovement.move = true;
+						yield return new WaitForSeconds (1.2f);
+						CA.attackRight = true;
+						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0,0,-45));
+						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 0.5f);
+						CA.attackRight = false;
+					}else if (Random.Range (1,3) == 2){
+						bossMovement.nextPosition = new Vector3 (-6,20,0);
+						yield return new WaitForSeconds (0.6f);
+						bossMovement.move = false;
+						CA.attackLeft = true;
+						Instantiate (consecAttAmmo, transform.position,Quaternion.Euler (0,0,45));
+						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 0.5f);
+						CA.attackLeft = false;
+						bossMovement.nextPosition = new Vector3 (6,20,0);
+						bossMovement.move = true;
+						yield return new WaitForSeconds (1.2f);
+						bossMovement.move = false;
+						CA.attackRight = true;
+						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0,0,-45));
+						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 0.5f);
+						CA.attackRight = false;
+						bossMovement.nextPosition = new Vector3 (-6,20,0);
+						bossMovement.move = true;
+						yield return new WaitForSeconds (1.2f);
+						bossMovement.move = false;
+						CA.attackLeft = true;
+						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0,0,45));
+						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 0.5f);
+						CA.attackLeft = false;
+					}
+				loopsDone = 0;
+			}
 		}
 	}
 
@@ -205,29 +262,21 @@ public class BossScript : MonoBehaviour {
 			HP -= 10;
 			if (Random.Range(1,10) == 1) {
 				//sparksPosition = new Vector3 (2.5f,-0.2f,0);
-			}
-			if (Random.Range(1,10) == 2){
+			}else if (Random.Range(1,10) == 2){
 				//sparksPosition = new Vector3 (2.9f,1f,0);
-			}
-			if (Random.Range(1,10) == 3){
+			}else if (Random.Range(1,10) == 3){
 				//sparksPosition = new Vector3 (1.1f,1.45f,0);
-			}
-			if (Random.Range(1,10) == 4){
+			}else if (Random.Range(1,10) == 4){
 				//sparksPosition = new Vector3 (-1.1f,1f,0);
-			}
-			if (Random.Range(1,10) == 5){
+			}else if (Random.Range(1,10) == 5){
 				//sparksPosition = new Vector3 (0,-0.75f,0);
-			}
-			if (Random.Range(1,10) == 6){
+			}else if (Random.Range(1,10) == 6){
 				//sparksPosition = new Vector3 (-0.2f,-2.5f,0);
-			}
-			if (Random.Range(1,10) == 7){
+			}else if (Random.Range(1,10) == 7){
 				//sparksPosition = new Vector3 (-2.8f,1.6f,0);
-			}
-			if (Random.Range(1,10) == 8){
+			}else if (Random.Range(1,10) == 8){
 				//sparksPosition = new Vector3 (-2.31f,-0.5f,0);
-			}
-			if (Random.Range(1,10) == 9){
+			}else {
 				//sparksPosition = new Vector3 (-0.6f,0.25f,0);
 			}
 			//Instantiate(sparks, sparksPosition + transform.position,transform.rotation);
@@ -236,29 +285,21 @@ public class BossScript : MonoBehaviour {
 		if (other.tag == "playerRocket") {
 			if (Random.Range(1,10) == 1) {
 			//	sparksPosition = new Vector3 (2.5f,-0.2f,0);
-			}
-			if (Random.Range(1,10) == 2){
+			}else if (Random.Range(1,10) == 2){
 			//	sparksPosition = new Vector3 (2.9f,1f,0);
-			}
-			if (Random.Range(1,10) == 3){
+			}else if (Random.Range(1,10) == 3){
 			//	sparksPosition = new Vector3 (1.1f,1.45f,0);
-			}
-			if (Random.Range(1,10) == 4){
+			}else if (Random.Range(1,10) == 4){
 			//	sparksPosition = new Vector3 (-1.1f,1f,0);
-			}
-			if (Random.Range(1,10) == 5){
+			}else if (Random.Range(1,10) == 5){
 			//	sparksPosition = new Vector3 (0,-0.75f,0);
-			}
-			if (Random.Range(1,10) == 6){
+			}else 	if (Random.Range(1,10) == 6){
 			//	sparksPosition = new Vector3 (-0.2f,-2.5f,0);
-			}
-			if (Random.Range(1,10) == 7){
+			}else if (Random.Range(1,10) == 7){
 			//	sparksPosition = new Vector3 (-2.8f,1.6f,0);
-			}
-			if (Random.Range(1,10) == 8){
+			}else if (Random.Range(1,10) == 8){
 			//	sparksPosition = new Vector3 (-2.31f,-0.5f,0);
-			}
-			if (Random.Range(1,10) == 9){
+			}else{
 			//	sparksPosition = new Vector3 (-0.6f,0.25f,0);
 			}
 			//Instantiate(explosion, sparksPosition + transform.position,transform.rotation);
