@@ -21,7 +21,7 @@ public class consecutiveAmmo : MonoBehaviour {
 			if (attackLeft){
 				transform.rotation = transform.rotation * additionalRotation;
 			}else if (attackRight){
-				transform.rotation = transform.rotation * additionalRotation;
+				transform.rotation = transform.rotation * Quaternion.Euler(0,0,1.5f);
 			}
 			yield return new WaitForSeconds (fireRate);
 		}

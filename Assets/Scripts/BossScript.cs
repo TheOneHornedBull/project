@@ -7,30 +7,29 @@ public class BossScript : MonoBehaviour {
 	public int HP;
 	public Text hpText;
 	public Slider HPSlider;
-	public float defaultWaitBeforeChangeDirection;
 	public GameObject consecAttAmmo;
+	public GameObject sparks;
+	public GameObject explosion;
+	private Vector3 sparksPosition;
+	public float defaultWaitBeforeChangeDirection = 4f;
 	private GameObject leftWing;
 	private GameObject rightWing;
 	private GameObject shield;
 	private GameObject hpFill;
-	private int consecutiveAmmCount;
 	private int i;
-	public float basicShotRate;
-	public float arrowShotRate;
-	public float buckShotRate;
-	public float spreadShotRate;
-	public int basicAttackNumber;
-	public int arrowShotNumber;
-	public int buckShotNumber;
-	public int spreadShotNumber;
-	public bool doBasicAttack;
-	public bool doArrowAttack;
-	public bool doBuckShotAttack;
-	public bool doSpreadShotAttack;
-	public bool doConsecutiveAttack;
+	public float basicShotRate = 0.15f;
+	public float arrowShotRate = 0.3f;
+	public float buckShotRate = 0.3f;
+	public float spreadShotRate = 0.3f;
+	public int basicAttackNumber = 30;
+	public int arrowShotNumber = 3;
+	public int buckShotNumber = 5;
+	public int spreadShotNumber = 4;
+	public bool doBasicAttack = false;
+	public bool doArrowAttack = false;
+	public bool doBuckShotAttack = false;
+	public bool doSpreadShotAttack = false;
 	public bool useShield;
-	public bool doConsAnimS;
-	public bool doConsAnimB;
 	private Animator anim;
 	bossShootingScript bossShooting;
 	bossMovementScript bossMovement;
@@ -39,24 +38,22 @@ public class BossScript : MonoBehaviour {
 	private int arrowAttacksStarted=0;
 	private int spreadAttacksStarted=0;
 	private int buckAttacksStarted=0;
-	private int consecutiveAttacksStarted=0;
 	public int loopsDone=0;
-	Quaternion a;
 
-	void Awake () {
-		bossShooting = GetComponent<bossShootingScript> ();
-		bossMovement = GetComponent<bossMovementScript> ();
-		CA = consecAttAmmo.GetComponent<consecutiveAmmo> ();
-		StartCoroutine (shootingPhasesController());
-		anim = GetComponent<Animator> ();
+	void Start () {
 		HP = 10000;
 		useShield = false;
 		leftWing = GameObject.Find ("leftWing");
 		rightWing = GameObject.Find ("rightWing");
 		shield = GameObject.Find ("Shield");
+		CA = consecAttAmmo.GetComponent<consecutiveAmmo> ();
 		useShield = false;
 		doBasicAttack = false;
 		hpFill = GameObject.Find ("BossFill");
+		bossShooting = GetComponent<bossShootingScript> ();
+		bossMovement = GetComponent<bossMovementScript> ();
+		anim = GetComponent<Animator> ();
+		StartCoroutine (shootingPhasesController());
 	}
 
 	void FixedUpdate () {
@@ -92,7 +89,6 @@ public class BossScript : MonoBehaviour {
 			doBasicAttack = false;
 			doArrowAttack = false;
 			doBuckShotAttack = false;
-			doConsecutiveAttack = false;
 			useShield = false;
 			StopAllCoroutines();
 			Debug.Log ("You win !");
@@ -195,7 +191,7 @@ public class BossScript : MonoBehaviour {
 						bossMovement.move = false;
 						CA.attackRight = true;
 						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0,0,-45));
-						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 0.5f);
+						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 2f);
 						CA.attackRight = false;
 						bossMovement.nextPosition = new Vector3 (-6,20,0);
 						bossMovement.move = true;
@@ -203,14 +199,14 @@ public class BossScript : MonoBehaviour {
 						bossMovement.move = false;
 						CA.attackLeft = true;
 						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0,0,45));
-						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 0.5f);
+						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 2f);
 						CA.attackLeft = false;
 						bossMovement.nextPosition = new Vector3 (6,20,0);
 						bossMovement.move = true;
 						yield return new WaitForSeconds (1.2f);
 						CA.attackRight = true;
 						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0,0,-45));
-						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 0.5f);
+						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 2f);
 						CA.attackRight = false;
 					}else if (Random.Range (1,3) == 2){
 						bossMovement.nextPosition = new Vector3 (-6,20,0);
@@ -218,7 +214,7 @@ public class BossScript : MonoBehaviour {
 						bossMovement.move = false;
 						CA.attackLeft = true;
 						Instantiate (consecAttAmmo, transform.position,Quaternion.Euler (0,0,45));
-						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 0.5f);
+						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 2f);
 						CA.attackLeft = false;
 						bossMovement.nextPosition = new Vector3 (6,20,0);
 						bossMovement.move = true;
@@ -226,7 +222,7 @@ public class BossScript : MonoBehaviour {
 						bossMovement.move = false;
 						CA.attackRight = true;
 						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0,0,-45));
-						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 0.5f);
+						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 2f);
 						CA.attackRight = false;
 						bossMovement.nextPosition = new Vector3 (-6,20,0);
 						bossMovement.move = true;
@@ -234,7 +230,7 @@ public class BossScript : MonoBehaviour {
 						bossMovement.move = false;
 						CA.attackLeft = true;
 						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0,0,45));
-						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 0.5f);
+						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 2f);
 						CA.attackLeft = false;
 					}
 				loopsDone = 0;
@@ -261,48 +257,48 @@ public class BossScript : MonoBehaviour {
 		if (other.tag == "playerBullet") {
 			HP -= 10;
 			if (Random.Range(1,10) == 1) {
-				//sparksPosition = new Vector3 (2.5f,-0.2f,0);
+				sparksPosition = new Vector3 (2.5f,-0.2f,0);
 			}else if (Random.Range(1,10) == 2){
-				//sparksPosition = new Vector3 (2.9f,1f,0);
+				sparksPosition = new Vector3 (2.9f,1f,0);
 			}else if (Random.Range(1,10) == 3){
-				//sparksPosition = new Vector3 (1.1f,1.45f,0);
+				sparksPosition = new Vector3 (1.1f,1.45f,0);
 			}else if (Random.Range(1,10) == 4){
-				//sparksPosition = new Vector3 (-1.1f,1f,0);
+				sparksPosition = new Vector3 (-1.1f,1f,0);
 			}else if (Random.Range(1,10) == 5){
-				//sparksPosition = new Vector3 (0,-0.75f,0);
+				sparksPosition = new Vector3 (0,-0.75f,0);
 			}else if (Random.Range(1,10) == 6){
-				//sparksPosition = new Vector3 (-0.2f,-2.5f,0);
+				sparksPosition = new Vector3 (-0.2f,-2.5f,0);
 			}else if (Random.Range(1,10) == 7){
-				//sparksPosition = new Vector3 (-2.8f,1.6f,0);
+				sparksPosition = new Vector3 (-2.8f,1.6f,0);
 			}else if (Random.Range(1,10) == 8){
-				//sparksPosition = new Vector3 (-2.31f,-0.5f,0);
+				sparksPosition = new Vector3 (-2.31f,-0.5f,0);
 			}else {
-				//sparksPosition = new Vector3 (-0.6f,0.25f,0);
+				sparksPosition = new Vector3 (-0.6f,0.25f,0);
 			}
-			//Instantiate(sparks, sparksPosition + transform.position,transform.rotation);
+			Instantiate(sparks, sparksPosition + transform.position,transform.rotation);
 		}
 
 		if (other.tag == "playerRocket") {
 			if (Random.Range(1,10) == 1) {
-			//	sparksPosition = new Vector3 (2.5f,-0.2f,0);
+				sparksPosition = new Vector3 (2.5f,-0.2f,0);
 			}else if (Random.Range(1,10) == 2){
-			//	sparksPosition = new Vector3 (2.9f,1f,0);
+				sparksPosition = new Vector3 (2.9f,1f,0);
 			}else if (Random.Range(1,10) == 3){
-			//	sparksPosition = new Vector3 (1.1f,1.45f,0);
+				sparksPosition = new Vector3 (1.1f,1.45f,0);
 			}else if (Random.Range(1,10) == 4){
-			//	sparksPosition = new Vector3 (-1.1f,1f,0);
+				sparksPosition = new Vector3 (-1.1f,1f,0);
 			}else if (Random.Range(1,10) == 5){
-			//	sparksPosition = new Vector3 (0,-0.75f,0);
+				sparksPosition = new Vector3 (0,-0.75f,0);
 			}else 	if (Random.Range(1,10) == 6){
-			//	sparksPosition = new Vector3 (-0.2f,-2.5f,0);
+				sparksPosition = new Vector3 (-0.2f,-2.5f,0);
 			}else if (Random.Range(1,10) == 7){
-			//	sparksPosition = new Vector3 (-2.8f,1.6f,0);
+				sparksPosition = new Vector3 (-2.8f,1.6f,0);
 			}else if (Random.Range(1,10) == 8){
-			//	sparksPosition = new Vector3 (-2.31f,-0.5f,0);
+				sparksPosition = new Vector3 (-2.31f,-0.5f,0);
 			}else{
-			//	sparksPosition = new Vector3 (-0.6f,0.25f,0);
+				sparksPosition = new Vector3 (-0.6f,0.25f,0);
 			}
-			//Instantiate(explosion, sparksPosition + transform.position,transform.rotation);
+			Instantiate(explosion, sparksPosition + transform.position,transform.rotation);
 
 			HP -= 20;
 
