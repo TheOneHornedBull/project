@@ -53,18 +53,27 @@ public class bossShootingScript : MonoBehaviour {
 	public IEnumerator buckShotAttack (float _buckShotRate, int _buckShotNumber){
 
 			if (Random.Range (1, 4) == 1) {
+			Instantiate (farLeftLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
+			Instantiate (farLeftRBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
+			yield return new WaitForSeconds (1);
 				for (int i =0; i <= _buckShotNumber; i ++) {
 					Instantiate (farLeftLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
 					Instantiate (farLeftRBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
 					yield return new WaitForSeconds (_buckShotRate);
 				}
 			} else if (Random.Range (1, 4) == 2) {
+				Instantiate (farRightLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
+				Instantiate (farRightLBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
+				yield return new WaitForSeconds (1);
 				for (int i =0; i <= _buckShotNumber; i ++) {
 					Instantiate (farRightLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
 					Instantiate (farRightRBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
 					yield return new WaitForSeconds (_buckShotRate);
 				}
 			} else {
+				Instantiate (middleLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
+				Instantiate (middleLBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
+				yield return new WaitForSeconds (1);
 				for (int i =0; i <= _buckShotNumber; i ++) {
 					Instantiate (middleLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
 					Instantiate (middleRBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
