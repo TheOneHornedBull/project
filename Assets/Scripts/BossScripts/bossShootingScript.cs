@@ -16,7 +16,6 @@ public class bossShootingScript : MonoBehaviour {
 	public GameObject explosion;
 	public GameObject HPCrate;
 	public GameObject rocketCrate;
-	consecutiveAmmo consAmmScript;
 	private int consecutiveAmmCount;
 	private bool doBasicAttack;
 	private bool doConsecutiveAttack;
@@ -25,10 +24,6 @@ public class bossShootingScript : MonoBehaviour {
 	private float basicNextFire;
 	private Vector3 nextPosition;
 	private Vector3 sparksPosition;
-
-	void Start () {
-		consAmmScript = GetComponent<consecutiveAmmo>();
-	}
 
 	public IEnumerator basicAttack(float _basicShotRate, int _basicAttackNumber){
 		for(int i=0; i <= _basicAttackNumber; i++) {

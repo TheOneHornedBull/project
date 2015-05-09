@@ -9,6 +9,11 @@ public class bossMovementScript : MonoBehaviour {
 	public Vector3 bounds;
 	public float timeToReachTarget;
 	public Vector3 nextPosition;
+	Animator anim;
+
+	void Start () {
+		anim = GetComponent<Animator> ();
+	}
 
 	public void defaultMovement(){
 		Vector3 vel = Vector3.zero;
@@ -36,4 +41,23 @@ public class bossMovementScript : MonoBehaviour {
 		}
 
 	}
+
+	public IEnumerator defaultAttackMove () {
+		move = false;
+		anim.SetBool("basicAttackAnimBool", true);
+		yield return new WaitForSeconds (1f);
+		anim.SetBool("basicAttackAnimBool", false);
+		move = true;
+		StopCoroutine(defaultAttackMove ());
+	}
+
+	public IEnumerator buckShotAttackMove () {
+		move = false;
+		anim.SetBool ("buckShotAttackAnimBool", true);
+		yield return new WaitForSeconds (2);
+		anim.SetBool ("buckShotAttackAnimBool", false);
+		move = true;
+		StopCoroutine(buckShotAttackMove ());
+	}
+
 }

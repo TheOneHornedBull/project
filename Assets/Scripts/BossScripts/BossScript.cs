@@ -30,7 +30,6 @@ public class BossScript : MonoBehaviour {
 	public bool doBuckShotAttack = false;
 	public bool doSpreadShotAttack = false;
 	public bool useShield;
-	private Animator anim;
 	bossShootingScript bossShooting;
 	bossMovementScript bossMovement;
 	consecutiveAmmo CA;
@@ -52,7 +51,6 @@ public class BossScript : MonoBehaviour {
 		hpFill = GameObject.Find ("BossFill");
 		bossShooting = GetComponent<bossShootingScript> ();
 		bossMovement = GetComponent<bossMovementScript> ();
-		anim = GetComponent<Animator> ();
 		StartCoroutine (shootingPhasesController());
 	}
 
@@ -145,11 +143,13 @@ public class BossScript : MonoBehaviour {
 	IEnumerator shootingPhasesController () {
 		while (true){
 			yield return new WaitForSeconds (0.5f);
+			StartCoroutine(bossMovement.defaultAttackMove());
+			yield return new WaitForSeconds (2f);
 			bossMovement.move = true;
 			bossMovement.moveDefault = true;
 			useShield = false;
 			doBasicAttack = true;
-			bossMovement.maxSpeed = 5;
+			bossMovement.maxSpeed = 7;
 			yield return new WaitForSeconds (basicShotRate * basicAttackNumber + 1f);
 			useShield = true;
 			doBasicAttack = false;
@@ -167,8 +167,10 @@ public class BossScript : MonoBehaviour {
 			doSpreadShotAttack = true;
 			yield return new WaitForSeconds (spreadShotRate * spreadShotNumber + 0.5f);
 			doSpreadShotAttack = false;
+			StartCoroutine(bossMovement.defaultAttackMove());
+			yield return new WaitForSeconds (2f);
 			bossMovement.move = true;
-			bossMovement.maxSpeed = 5;
+			bossMovement.maxSpeed = 7;
 			bossMovement.moveDefault = true;
 			doBasicAttack = true;
 			yield return new WaitForSeconds (basicShotRate * basicAttackNumber + 0.5f);
@@ -178,6 +180,8 @@ public class BossScript : MonoBehaviour {
 			bossMovement.nextPosition = new Vector3 (0,20,0);
 			yield return new WaitForSeconds (0.8f);
 			bossMovement.move = false;
+			StartCoroutine(bossMovement.buckShotAttackMove());
+			yield return new WaitForSeconds (3);
 			doBuckShotAttack = true;
 			yield return new WaitForSeconds (buckShotRate * buckShotNumber + 0.5f);
 			doBuckShotAttack = false;

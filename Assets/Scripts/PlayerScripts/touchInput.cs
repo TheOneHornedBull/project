@@ -12,7 +12,6 @@ public class touchInput : MonoBehaviour {
 	public int rocketCount;
 	Vector3 sparksPosition;
 	GameObject playerBody;
-	Animator anim;
 	Vector3 touchPoint;
 	Quaternion startRotation;
 	int HP = 300;
@@ -21,7 +20,6 @@ public class touchInput : MonoBehaviour {
 	bool isPaused;
 
 	void Awake () {
-		anim = GetComponent <Animator> ();
 		Time.timeScale = 0;
 		isPaused = true;
 		fill = GameObject.Find ("PlayerFill");
@@ -32,7 +30,6 @@ public class touchInput : MonoBehaviour {
 
 		if (HP == 200 || HP == 150 || HP == 100 || HP == 50) {
 			HP -= 5;
-			anim.SetBool ("playerShake",true);
 			StartCoroutine (colorChanger());
 		}
 

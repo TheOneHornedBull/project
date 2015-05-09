@@ -28,7 +28,7 @@ public class DistanceLerp : MonoBehaviour
 	
 	void Update()
 	{
-		ProcessInput();
+			ProcessInput();
 	}
 	
 	void FixedUpdate()
