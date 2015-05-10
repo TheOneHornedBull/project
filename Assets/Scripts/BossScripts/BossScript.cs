@@ -142,13 +142,13 @@ public class BossScript : MonoBehaviour {
 
 	IEnumerator shootingPhasesController () {
 		while (true){
-			yield return new WaitForSeconds (0.5f);
+			yield return new WaitForSeconds (1.5f);
 			bossMovement.move = true;
 			bossMovement.moveDefault = true;
 			useShield = false;
 			doBasicAttack = true;
 			bossMovement.maxSpeed = 7;
-			yield return new WaitForSeconds (basicShotRate * basicAttackNumber + 1f);
+			yield return new WaitForSeconds (basicShotRate * basicAttackNumber + 1.5f);
 			useShield = true;
 			doBasicAttack = false;
 			bossMovement.maxSpeed = 15;
@@ -208,7 +208,7 @@ public class BossScript : MonoBehaviour {
 						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0,0,-45));
 						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
 						CA.attackRight = false;
-					}else if (Random.Range (1,3) == 2){
+					}else{
 						bossMovement.nextPosition = new Vector3 (-6,20,0);
 						yield return new WaitForSeconds (0.6f);
 						bossMovement.move = false;
