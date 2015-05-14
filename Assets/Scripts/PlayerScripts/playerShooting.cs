@@ -3,7 +3,7 @@ using System.Collections;
 
 public class playerShooting : MonoBehaviour {
 
-	DistanceLerp dl;
+	playerContrAndShoot dl;
 	touchInput ti;
 	public bool useRockets;
 	public GameObject playerRockets;
@@ -13,7 +13,7 @@ public class playerShooting : MonoBehaviour {
 	float nextRocketFire;
 
 	void Start () {
-		dl = GetComponent<DistanceLerp>();
+		dl = GetComponent<playerContrAndShoot>();
 		ti = GetComponent<touchInput>();
 	}
 

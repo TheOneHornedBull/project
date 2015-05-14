@@ -13,15 +13,16 @@ public class consecutiveAmmo : MonoBehaviour {
 	}
 	
 	IEnumerator attack(float fireRate, int count){
-		for (int i=0; i<= count - 15; i++) {
+		transform.rotation = Quaternion.Euler (0,0,0);
+		for (int i=0; i<= count - 20; i++) {
 			Instantiate(ammo, transform.position - new Vector3 (2.7f, 1,0), transform.rotation);
 			Instantiate(ammo, transform.position + new Vector3 (2.7f, -1,0), transform.rotation);
 			if (attackLeft){
-				transform.rotation = transform.rotation * Quaternion.Euler(0,0,3);
+				transform.rotation = transform.rotation * Quaternion.Euler(0,0,5);
 			}else if (attackRight){
-				transform.rotation = transform.rotation * Quaternion.Euler(0,0,-3);
+				transform.rotation = transform.rotation * Quaternion.Euler(0,0,-5);
 			}
-			yield return new WaitForSeconds (fireRate);
+			yield return new WaitForSeconds (fireRate + 0.1f);
 		}
 		transform.rotation = Quaternion.Euler (0,0,0);
 		yield return new WaitForSeconds ((fireRate * (count-15)) + 1 );

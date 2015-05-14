@@ -32,12 +32,15 @@ public class BossScript : MonoBehaviour {
 	public bool useShield;
 	bossShootingScript bossShooting;
 	bossMovementScript bossMovement;
-	consecutiveAmmo CA;
 	private int basicAttacksStarted=0;
 	private int arrowAttacksStarted=0;
 	private int spreadAttacksStarted=0;
 	private int buckAttacksStarted=0;
 	public int loopsDone=0;
+	private GameObject leftConsecGun;
+	private GameObject rightConsecGun;
+	Animator anim;
+	consecutiveAmmo CA;
 
 	void Start () {
 		HP = 10000;
@@ -45,13 +48,17 @@ public class BossScript : MonoBehaviour {
 		leftWing = GameObject.Find ("leftWing");
 		rightWing = GameObject.Find ("rightWing");
 		shield = GameObject.Find ("Shield");
-		CA = consecAttAmmo.GetComponent<consecutiveAmmo> ();
+		leftConsecGun = GameObject.Find ("leftConsecutiveGun");
+		rightConsecGun = GameObject.Find ("rightConsecutiveGun");
+		anim = GetComponent<Animator> ();
 		useShield = false;
 		doBasicAttack = false;
 		hpFill = GameObject.Find ("BossFill");
 		bossShooting = GetComponent<bossShootingScript> ();
 		bossMovement = GetComponent<bossMovementScript> ();
 		StartCoroutine (shootingPhasesController());
+		CA = consecAttAmmo.GetComponent<consecutiveAmmo> ();
+		bossMovement = GetComponent<bossMovementScript> ();
 	}
 
 	void FixedUpdate () {
@@ -142,98 +149,115 @@ public class BossScript : MonoBehaviour {
 
 	IEnumerator shootingPhasesController () {
 		while (true){
-			yield return new WaitForSeconds (1.5f);
-			bossMovement.move = true;
-			bossMovement.moveDefault = true;
-			useShield = false;
-			doBasicAttack = true;
-			bossMovement.maxSpeed = 7;
-			yield return new WaitForSeconds (basicShotRate * basicAttackNumber + 1.5f);
-			useShield = true;
-			doBasicAttack = false;
-			bossMovement.maxSpeed = 15;
-			doArrowAttack = true;
-			yield return new WaitForSeconds (arrowShotRate * arrowShotNumber + 0.5f);
-			doArrowAttack = false;
-			useShield = false;
-			bossMovement.moveDefault = false;
-			bossMovement.maxSpeed = 10;
-			bossMovement.nextPosition = new Vector3 (0,20,0);
-			bossMovement.timeToReachTarget = 2;
-			yield return new WaitForSeconds (0.5f);
-			bossMovement.move = false;
-			doSpreadShotAttack = true;
-			yield return new WaitForSeconds (spreadShotRate * spreadShotNumber + 0.5f);
-			doSpreadShotAttack = false;
-			bossMovement.move = true;
-			bossMovement.maxSpeed = 7;
-			bossMovement.moveDefault = true;
-			doBasicAttack = true;
-			yield return new WaitForSeconds (basicShotRate * basicAttackNumber + 0.5f);
-			doBasicAttack = false;
-			bossMovement.moveDefault = false;
-			bossMovement.maxSpeed = 15;
-			bossMovement.nextPosition = new Vector3 (0,20,0);
-			yield return new WaitForSeconds (0.8f);
-			bossMovement.move = false;
-			StartCoroutine(bossMovement.buckShotAttackMove());
-			yield return new WaitForSeconds (3);
-			doBuckShotAttack = true;
-			yield return new WaitForSeconds (buckShotRate * buckShotNumber + 1.5f);
-			doBuckShotAttack = false;
-			bossMovement.move = true;
-			bossMovement.maxSpeed = 30;
-			loopsDone ++;
-			if (loopsDone >= 2){
-					if (Random.Range (1,3) == 1){
-						bossMovement.nextPosition = new Vector3 (6,20,0);
-						yield return new WaitForSeconds (0.6f);
-						bossMovement.move = false;
-						CA.attackRight = true;
-						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0,0,-45));
-						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
-						CA.attackRight = false;
-						bossMovement.nextPosition = new Vector3 (-6,20,0);
+			if (bossShooting.consecAttFinished){
+				yield return new WaitForSeconds (1.5f);
+				bossMovement.move = true;
+				bossMovement.moveDefault = true;
+				useShield = false;
+				doBasicAttack = true;
+				bossMovement.maxSpeed = 7;
+				yield return new WaitForSeconds (basicShotRate * basicAttackNumber + 1.5f);
+				useShield = true;
+				doBasicAttack = false;
+				bossMovement.maxSpeed = 15;
+				doArrowAttack = true;
+				yield return new WaitForSeconds (arrowShotRate * arrowShotNumber + 0.5f);
+				doArrowAttack = false;
+				useShield = false;
+				bossMovement.moveDefault = false;
+				bossMovement.maxSpeed = 10;
+				bossMovement.nextPosition = new Vector3 (0,20,0);
+				bossMovement.timeToReachTarget = 2;
+				yield return new WaitForSeconds (0.8f);
+				bossMovement.move = false;
+				doSpreadShotAttack = true;
+				yield return new WaitForSeconds (spreadShotRate * spreadShotNumber + 0.5f);
+				doSpreadShotAttack = false;
+				bossMovement.move = true;
+				bossMovement.maxSpeed = 7;
+				bossMovement.moveDefault = true;
+				doBasicAttack = true;
+				yield return new WaitForSeconds (basicShotRate * basicAttackNumber + 0.5f);
+				doBasicAttack = false;
+				bossMovement.moveDefault = false;
+				bossMovement.maxSpeed = 15;
+				bossMovement.nextPosition = new Vector3 (0,20,0);
+				yield return new WaitForSeconds (0.8f);
+				bossMovement.move = false;
+				yield return new WaitForSeconds (3);
+				doBuckShotAttack = true;
+				yield return new WaitForSeconds (buckShotRate * buckShotNumber + 1.5f);
+				doBuckShotAttack = false;
+				bossMovement.move = true;
+				bossMovement.maxSpeed = 30;
+				loopsDone ++;
+				if (loopsDone >= 2){
+					if (Random.Range (1, 3) == 1) {
+						bossMovement.nextPosition = new Vector3 (-6, 20, 0);
 						bossMovement.move = true;
 						yield return new WaitForSeconds (1.2f);
 						bossMovement.move = false;
 						CA.attackLeft = true;
-						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0,0,45));
+						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, 45));
 						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
 						CA.attackLeft = false;
-						bossMovement.nextPosition = new Vector3 (6,20,0);
+						bossMovement.move = true;
+						bossMovement.nextPosition = new Vector3 (6, 20, 0);
+						yield return new WaitForSeconds (0.6f);
+						bossMovement.move = false;
+						CA.attackRight = true;
+						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, -45));
+						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
+						CA.attackRight = false;
+						bossMovement.nextPosition = new Vector3 (-6, 20, 0);
+						bossMovement.move = true;
+						yield return new WaitForSeconds (1.2f);
+						bossMovement.move = false;
+						CA.attackLeft = true;
+						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, 45));
+						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
+						CA.attackLeft = false;
+						bossMovement.nextPosition = new Vector3 (6, 20, 0);
 						bossMovement.move = true;
 						yield return new WaitForSeconds (1.2f);
 						CA.attackRight = true;
-						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0,0,-45));
+						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, -45));
 						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
 						CA.attackRight = false;
 					}else{
-						bossMovement.nextPosition = new Vector3 (-6,20,0);
+						bossMovement.nextPosition = new Vector3 (-6, 20, 0);
+						bossMovement.move = true;
+						yield return new WaitForSeconds (1.2f);
+						bossMovement.move = false;
+						CA.attackLeft = true;
+						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, 45));
+						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
+						CA.attackLeft = false;
+						bossMovement.move = true;
+						bossMovement.nextPosition = new Vector3 (6, 20, 0);
 						yield return new WaitForSeconds (0.6f);
 						bossMovement.move = false;
-						CA.attackLeft = true;
-						Instantiate (consecAttAmmo, transform.position,Quaternion.Euler (0,0,45));
-						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
-						CA.attackLeft = false;
-						bossMovement.nextPosition = new Vector3 (6,20,0);
-						bossMovement.move = true;
-						yield return new WaitForSeconds (1.2f);
-						bossMovement.move = false;
 						CA.attackRight = true;
-						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0,0,-45));
+						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, -45));
 						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
 						CA.attackRight = false;
-						bossMovement.nextPosition = new Vector3 (-6,20,0);
+						bossMovement.nextPosition = new Vector3 (-6, 20, 0);
 						bossMovement.move = true;
 						yield return new WaitForSeconds (1.2f);
 						bossMovement.move = false;
 						CA.attackLeft = true;
-						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0,0,45));
-						yield return new WaitForSeconds (CA.fireRate * CA.maxCount + 2f);
+						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, 45));
+						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
 						CA.attackLeft = false;
+						bossMovement.nextPosition = new Vector3 (6, 20, 0);
+						bossMovement.move = true;
+						yield return new WaitForSeconds (1.2f);
+						CA.attackRight = true;
+						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, -45));
+						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
+						CA.attackRight = false;
 					}
-				loopsDone = 0;
+				}
 			}
 		}
 	}
@@ -300,7 +324,7 @@ public class BossScript : MonoBehaviour {
 			}
 			Instantiate(explosion, sparksPosition + transform.position,transform.rotation);
 
-			HP -= 20;
+			HP -= 100;
 
 		}
 	}

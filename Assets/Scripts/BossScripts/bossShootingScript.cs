@@ -24,6 +24,14 @@ public class bossShootingScript : MonoBehaviour {
 	private float basicNextFire;
 	private Vector3 nextPosition;
 	private Vector3 sparksPosition;
+	public bool consecAttFinished = true;
+	bossMovementScript bossMovement;
+	consecutiveAmmo CA;
+
+	void Start () {
+		CA = consecutiveAmmo.GetComponent<consecutiveAmmo> ();
+		bossMovement = GetComponent<bossMovementScript> ();
+	}
 
 	public IEnumerator basicAttack(float _basicShotRate, int _basicAttackNumber){
 		for(int i=0; i <= _basicAttackNumber; i++) {
@@ -63,7 +71,7 @@ public class bossShootingScript : MonoBehaviour {
 				}
 			} else if (Random.Range (1, 4) == 2) {
 				Instantiate (farRightLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
-				Instantiate (farRightLBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
+				Instantiate (farRightRBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
 				yield return new WaitForSeconds (1);
 				for (int i =0; i <= _buckShotNumber; i ++) {
 					Instantiate (farRightLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
@@ -72,7 +80,7 @@ public class bossShootingScript : MonoBehaviour {
 				}
 			} else {
 				Instantiate (middleLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
-				Instantiate (middleLBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
+				Instantiate (middleRBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
 				yield return new WaitForSeconds (1);
 				for (int i =0; i <= _buckShotNumber; i ++) {
 					Instantiate (middleLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
