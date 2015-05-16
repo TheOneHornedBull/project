@@ -29,6 +29,7 @@ public class BossScript : MonoBehaviour {
 	public bool doArrowAttack = false;
 	public bool doBuckShotAttack = false;
 	public bool doSpreadShotAttack = false;
+	public bool doConsecAttack = false;
 	public bool useShield;
 	bossShootingScript bossShooting;
 	bossMovementScript bossMovement;
@@ -45,8 +46,9 @@ public class BossScript : MonoBehaviour {
 	Animator rightAnim;
 	GameObject leftCover;
 	GameObject rightCover;
+	testScript ts;
 
-	void Start () {
+	public void Start () {
 		HP = 10000;
 		useShield = false;
 		leftWing = GameObject.Find ("leftWing");
@@ -63,13 +65,16 @@ public class BossScript : MonoBehaviour {
 		StartCoroutine (shootingPhasesController());
 		CA = consecAttAmmo.GetComponent<consecutiveAmmo> ();
 		bossMovement = GetComponent<bossMovementScript> ();
+		leftConsecGun = GameObject.Find ("leftGun");
+		rightConsecGun = GameObject.Find ("rightGun");
 		leftCover = GameObject.Find ("leftCover");
 		rightCover = GameObject.Find ("rightCover");
 		leftAnim = leftCover.GetComponent<Animator>();
 		rightAnim = rightCover.GetComponent<Animator>();
 	}
 
-	void FixedUpdate () {
+	public void FixedUpdate () {
+		ts = GetComponent <testScript>();
 		shootingPhases ();
 		shieldOnOff ();
 		bossMovement.defaultMovement ();
@@ -157,7 +162,7 @@ public class BossScript : MonoBehaviour {
 
 	IEnumerator shootingPhasesController () {
 		while (true){
-			if (bossShooting.consecAttFinished){
+			if (ts.consecDone == true){
 				yield return new WaitForSeconds (1.5f);
 				bossMovement.move = true;
 				bossMovement.moveDefault = true;
@@ -200,6 +205,7 @@ public class BossScript : MonoBehaviour {
 				bossMovement.maxSpeed = 30;
 				loopsDone ++;
 				if (loopsDone >= 2){
+					/**
 					if (Random.Range (1, 3) == 1) {
 						leftAnim.SetBool("leftCoverConsec",true);
 						rightAnim.SetBool("rightCoverConsec",true);
@@ -277,6 +283,9 @@ public class BossScript : MonoBehaviour {
 						rightAnim.SetBool("rightCoverConsec",false);
 						yield return new WaitForSeconds (1f);
 					}
+					*/
+					doConsecAttack = true;
+					yield return new WaitForSeconds (0.5f);
 				}
 			}
 		}
