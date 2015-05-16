@@ -41,6 +41,10 @@ public class BossScript : MonoBehaviour {
 	private GameObject rightConsecGun;
 	Animator anim;
 	consecutiveAmmo CA;
+	Animator leftAnim;
+	Animator rightAnim;
+	GameObject leftCover;
+	GameObject rightCover;
 
 	void Start () {
 		HP = 10000;
@@ -59,6 +63,10 @@ public class BossScript : MonoBehaviour {
 		StartCoroutine (shootingPhasesController());
 		CA = consecAttAmmo.GetComponent<consecutiveAmmo> ();
 		bossMovement = GetComponent<bossMovementScript> ();
+		leftCover = GameObject.Find ("leftCover");
+		rightCover = GameObject.Find ("rightCover");
+		leftAnim = leftCover.GetComponent<Animator>();
+		rightAnim = rightCover.GetComponent<Animator>();
 	}
 
 	void FixedUpdate () {
@@ -184,7 +192,7 @@ public class BossScript : MonoBehaviour {
 				bossMovement.nextPosition = new Vector3 (0,20,0);
 				yield return new WaitForSeconds (0.8f);
 				bossMovement.move = false;
-				yield return new WaitForSeconds (3);
+				yield return new WaitForSeconds (0.5f);
 				doBuckShotAttack = true;
 				yield return new WaitForSeconds (buckShotRate * buckShotNumber + 1.5f);
 				doBuckShotAttack = false;
@@ -193,6 +201,9 @@ public class BossScript : MonoBehaviour {
 				loopsDone ++;
 				if (loopsDone >= 2){
 					if (Random.Range (1, 3) == 1) {
+						leftAnim.SetBool("leftCoverConsec",true);
+						rightAnim.SetBool("rightCoverConsec",true);
+						yield return new WaitForSeconds (1f);
 						bossMovement.nextPosition = new Vector3 (-6, 20, 0);
 						bossMovement.move = true;
 						yield return new WaitForSeconds (1.2f);
@@ -224,7 +235,13 @@ public class BossScript : MonoBehaviour {
 						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, -45));
 						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
 						CA.attackRight = false;
+						leftAnim.SetBool("leftCoverConsec",false);
+						rightAnim.SetBool("rightCoverConsec",false);
+						yield return new WaitForSeconds (1f);
 					}else{
+						leftAnim.SetBool("leftCoverConsec",true);
+						rightAnim.SetBool("rightCoverConsec",true);
+						yield return new WaitForSeconds (0.5f);
 						bossMovement.nextPosition = new Vector3 (-6, 20, 0);
 						bossMovement.move = true;
 						yield return new WaitForSeconds (1.2f);
@@ -256,6 +273,9 @@ public class BossScript : MonoBehaviour {
 						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, -45));
 						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
 						CA.attackRight = false;
+						leftAnim.SetBool("leftCoverConsec",false);
+						rightAnim.SetBool("rightCoverConsec",false);
+						yield return new WaitForSeconds (1f);
 					}
 				}
 			}
