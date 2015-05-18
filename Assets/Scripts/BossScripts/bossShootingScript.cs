@@ -126,7 +126,7 @@ public class bossShootingScript : MonoBehaviour {
 				CA.attackLeft = true;
 				Instantiate (consecutiveAmmo, transform.position, Quaternion.Euler (0, 0, 45));
 			}
-			yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
+			yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 4f);
 			x *= -1;
 		}
 		leftAnim.SetBool("leftCoverConsec",false);
