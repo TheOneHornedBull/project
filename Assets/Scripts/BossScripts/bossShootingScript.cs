@@ -24,13 +24,25 @@ public class bossShootingScript : MonoBehaviour {
 	private float basicNextFire;
 	private Vector3 nextPosition;
 	private Vector3 sparksPosition;
-	public bool consecAttFinished = true;
+	Animator leftAnim;
+	Animator rightAnim;
+	GameObject leftCover;
+	GameObject rightCover;
 	bossMovementScript bossMovement;
 	consecutiveAmmo CA;
+	bossShootingScript bShooting;
+	BossScript bs;
+	int coroutinesStarted = 0;
+	float x;
 
 	void Start () {
-		CA = consecutiveAmmo.GetComponent<consecutiveAmmo> ();
+		bs = GetComponent <BossScript>();
 		bossMovement = GetComponent<bossMovementScript> ();
+		CA = consecutiveAmmo.GetComponent<consecutiveAmmo> ();
+		leftCover = GameObject.Find ("leftCover");
+		rightCover = GameObject.Find ("rightCover");
+		leftAnim = leftCover.GetComponent<Animator>();
+		rightAnim = rightCover.GetComponent<Animator>();
 	}
 
 	public IEnumerator basicAttack(float _basicShotRate, int _basicAttackNumber){
@@ -90,4 +102,37 @@ public class bossShootingScript : MonoBehaviour {
 			}
 			yield return new WaitForSeconds (1);
 	}
+
+	public IEnumerator consecAttack () {
+		if (Random.Range(1,3) == 1){
+			x = -6;
+		}else {
+			x = 6;
+		}
+		leftAnim.SetBool("leftCoverConsec",true);
+		rightAnim.SetBool("rightCoverConsec",true);
+		yield return new WaitForSeconds (1.5f);
+		for (int i = 0; i <= 3; i++) {
+			bossMovement.nextPosition = new Vector3 (x,20,0);
+			bossMovement.move = true;
+			yield return new WaitForSeconds(1.2f);
+			bossMovement.move = false;
+			if (x > 0){
+				CA.attackRight = true;
+				CA.attackLeft = false;
+				Instantiate (consecutiveAmmo, transform.position, Quaternion.Euler (0, 0, -45));
+			}else {
+				CA.attackRight = false;
+				CA.attackLeft = true;
+				Instantiate (consecutiveAmmo, transform.position, Quaternion.Euler (0, 0, 45));
+			}
+			yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
+			x *= -1;
+		}
+		leftAnim.SetBool("leftCoverConsec",false);
+		rightAnim.SetBool("rightCoverConsec",false);
+		yield return new WaitForSeconds (1);
+		bs.doConsecAttack = false;
+	}
+
 }

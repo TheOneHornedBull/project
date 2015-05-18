@@ -11,7 +11,6 @@ public class BossScript : MonoBehaviour {
 	public GameObject sparks;
 	public GameObject explosion;
 	private Vector3 sparksPosition;
-	public float defaultWaitBeforeChangeDirection = 4f;
 	private GameObject leftWing;
 	private GameObject rightWing;
 	private GameObject shield;
@@ -37,26 +36,14 @@ public class BossScript : MonoBehaviour {
 	private int arrowAttacksStarted=0;
 	private int spreadAttacksStarted=0;
 	private int buckAttacksStarted=0;
+	private int consecAttacksStarted=0;
 	public int loopsDone=0;
-	private GameObject leftConsecGun;
-	private GameObject rightConsecGun;
-	Animator anim;
 	consecutiveAmmo CA;
-	Animator leftAnim;
-	Animator rightAnim;
-	GameObject leftCover;
-	GameObject rightCover;
-	testScript ts;
 
 	public void Start () {
 		HP = 10000;
 		useShield = false;
-		leftWing = GameObject.Find ("leftWing");
-		rightWing = GameObject.Find ("rightWing");
 		shield = GameObject.Find ("Shield");
-		leftConsecGun = GameObject.Find ("leftConsecutiveGun");
-		rightConsecGun = GameObject.Find ("rightConsecutiveGun");
-		anim = GetComponent<Animator> ();
 		useShield = false;
 		doBasicAttack = false;
 		hpFill = GameObject.Find ("BossFill");
@@ -65,16 +52,9 @@ public class BossScript : MonoBehaviour {
 		StartCoroutine (shootingPhasesController());
 		CA = consecAttAmmo.GetComponent<consecutiveAmmo> ();
 		bossMovement = GetComponent<bossMovementScript> ();
-		leftConsecGun = GameObject.Find ("leftGun");
-		rightConsecGun = GameObject.Find ("rightGun");
-		leftCover = GameObject.Find ("leftCover");
-		rightCover = GameObject.Find ("rightCover");
-		leftAnim = leftCover.GetComponent<Animator>();
-		rightAnim = rightCover.GetComponent<Animator>();
 	}
 
 	public void FixedUpdate () {
-		ts = GetComponent <testScript>();
 		shootingPhases ();
 		shieldOnOff ();
 		bossMovement.defaultMovement ();
@@ -124,7 +104,6 @@ public class BossScript : MonoBehaviour {
 	}
 
 	void shootingPhases () {
-
 		if (doBasicAttack && basicAttacksStarted < 1) {
 			StartCoroutine(bossShooting.basicAttack(basicShotRate, basicAttackNumber));
 			basicAttacksStarted ++;
@@ -158,11 +137,20 @@ public class BossScript : MonoBehaviour {
 			StopCoroutine(bossShooting.buckShotAttack(buckShotRate,buckShotNumber));
 			buckAttacksStarted = 0;
 		}
+
+		if (doConsecAttack && consecAttacksStarted < 1) {
+			StartCoroutine (bossShooting.consecAttack ());
+			consecAttacksStarted++;
+		} else if (doConsecAttack && consecAttacksStarted > 1){
+			StopCoroutine(bossShooting.consecAttack ());
+		} else if (doConsecAttack == false && consecAttacksStarted <= 1) {
+			StopCoroutine(bossShooting.consecAttack());
+			consecAttacksStarted = 0;
+		}
 	}
 
-	IEnumerator shootingPhasesController () {
+	public IEnumerator shootingPhasesController () {
 		while (true){
-			if (ts.consecDone == true){
 				yield return new WaitForSeconds (1.5f);
 				bossMovement.move = true;
 				bossMovement.moveDefault = true;
@@ -205,89 +193,9 @@ public class BossScript : MonoBehaviour {
 				bossMovement.maxSpeed = 30;
 				loopsDone ++;
 				if (loopsDone >= 2){
-					/**
-					if (Random.Range (1, 3) == 1) {
-						leftAnim.SetBool("leftCoverConsec",true);
-						rightAnim.SetBool("rightCoverConsec",true);
-						yield return new WaitForSeconds (1f);
-						bossMovement.nextPosition = new Vector3 (-6, 20, 0);
-						bossMovement.move = true;
-						yield return new WaitForSeconds (1.2f);
-						bossMovement.move = false;
-						CA.attackLeft = true;
-						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, 45));
-						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
-						CA.attackLeft = false;
-						bossMovement.move = true;
-						bossMovement.nextPosition = new Vector3 (6, 20, 0);
-						yield return new WaitForSeconds (0.6f);
-						bossMovement.move = false;
-						CA.attackRight = true;
-						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, -45));
-						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
-						CA.attackRight = false;
-						bossMovement.nextPosition = new Vector3 (-6, 20, 0);
-						bossMovement.move = true;
-						yield return new WaitForSeconds (1.2f);
-						bossMovement.move = false;
-						CA.attackLeft = true;
-						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, 45));
-						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
-						CA.attackLeft = false;
-						bossMovement.nextPosition = new Vector3 (6, 20, 0);
-						bossMovement.move = true;
-						yield return new WaitForSeconds (1.2f);
-						CA.attackRight = true;
-						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, -45));
-						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
-						CA.attackRight = false;
-						leftAnim.SetBool("leftCoverConsec",false);
-						rightAnim.SetBool("rightCoverConsec",false);
-						yield return new WaitForSeconds (1f);
-					}else{
-						leftAnim.SetBool("leftCoverConsec",true);
-						rightAnim.SetBool("rightCoverConsec",true);
-						yield return new WaitForSeconds (0.5f);
-						bossMovement.nextPosition = new Vector3 (-6, 20, 0);
-						bossMovement.move = true;
-						yield return new WaitForSeconds (1.2f);
-						bossMovement.move = false;
-						CA.attackLeft = true;
-						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, 45));
-						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
-						CA.attackLeft = false;
-						bossMovement.move = true;
-						bossMovement.nextPosition = new Vector3 (6, 20, 0);
-						yield return new WaitForSeconds (0.6f);
-						bossMovement.move = false;
-						CA.attackRight = true;
-						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, -45));
-						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
-						CA.attackRight = false;
-						bossMovement.nextPosition = new Vector3 (-6, 20, 0);
-						bossMovement.move = true;
-						yield return new WaitForSeconds (1.2f);
-						bossMovement.move = false;
-						CA.attackLeft = true;
-						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, 45));
-						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
-						CA.attackLeft = false;
-						bossMovement.nextPosition = new Vector3 (6, 20, 0);
-						bossMovement.move = true;
-						yield return new WaitForSeconds (1.2f);
-						CA.attackRight = true;
-						Instantiate (consecAttAmmo, transform.position, Quaternion.Euler (0, 0, -45));
-						yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 3f);
-						CA.attackRight = false;
-						leftAnim.SetBool("leftCoverConsec",false);
-						rightAnim.SetBool("rightCoverConsec",false);
-						yield return new WaitForSeconds (1f);
-					}
-					*/
 					doConsecAttack = true;
-					yield return new WaitForSeconds (0.5f);
+					yield return new WaitForSeconds (26);
 				}
-			}
 		}
 	}
 

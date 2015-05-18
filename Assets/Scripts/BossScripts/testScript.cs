@@ -16,6 +16,7 @@ public class testScript : MonoBehaviour
 		bMovement = GetComponent <bossMovementScript> ();
 		bShooting = GetComponent <bossShootingScript>();
 		bs = GetComponent <BossScript>();
+		CA = consecAttAmmo.GetComponent <consecutiveAmmo>();
 	}
 
 	public void Update ()
