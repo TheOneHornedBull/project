@@ -8,6 +8,12 @@ public class playerShooting : MonoBehaviour {
 	public bool useRockets;
 	public GameObject playerRockets;
 	public GameObject playerBullet;
+	public GameObject acidBullet;
+	public GameObject fireBullet;
+	public GameObject electricBullet;
+	public enum bulletModifier {fireBullet, acidBullet, electricBullet, normalBullet};
+	public bulletModifier bm;
+	public GameObject bullet;
 	float nextFire;
 	public int rocketCount;
 	float nextRocketFire;
@@ -18,6 +24,15 @@ public class playerShooting : MonoBehaviour {
 	}
 
 	void Update () {
+		if (bm == bulletModifier.acidBullet) {
+			bullet = acidBullet;
+		} else if (bm == bulletModifier.electricBullet) {
+			bullet = electricBullet;
+		} else if (bm == bulletModifier.fireBullet) {
+			bullet = fireBullet;
+		} else if (bm == bulletModifier.normalBullet){
+			bullet = playerBullet;
+		}
 		basicShooting ();
 		rocketShooting ();
 		rocketCount = ti.rocketCount;
@@ -26,7 +41,7 @@ public class playerShooting : MonoBehaviour {
 	void basicShooting () {
 		if (Time.time > nextFire && dl.touching) {
 			nextFire = Time.time + 0.2f;
-			Instantiate (playerBullet, transform.position, transform.rotation);
+			Instantiate (bullet, transform.position, transform.rotation);
 		}
 	}
 

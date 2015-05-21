@@ -47,8 +47,8 @@ public class bossShootingScript : MonoBehaviour {
 
 	public IEnumerator basicAttack(float _basicShotRate, int _basicAttackNumber){
 		for(int i=0; i <= _basicAttackNumber; i++) {
-			Instantiate(basicAmmo, transform.position - new Vector3 (2.7f, 1,0), transform.rotation);
-			Instantiate(basicAmmo, transform.position + new Vector3 (2.7f, -1,0), transform.rotation);
+			Instantiate(basicAmmo, transform.position - new Vector3 (2, 2,0), transform.rotation);
+			Instantiate(basicAmmo, transform.position + new Vector3 (2, -2,0), transform.rotation);
 			yield return new WaitForSeconds (_basicShotRate);
 		}
 	}

@@ -194,7 +194,7 @@ public class BossScript : MonoBehaviour {
 				loopsDone ++;
 				if (loopsDone >= 2){
 					doConsecAttack = true;
-					yield return new WaitForSeconds (26);
+					yield return new WaitForSeconds (28);
 				}
 		}
 	}
@@ -215,7 +215,7 @@ public class BossScript : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter (Collider other){
-		if (other.tag == "playerBullet") {
+		if (other.tag == "playerBullet" || other.tag == "playerElectricBullet" || other.tag == "playerFireBullet" || other.tag == "playerAcidBullet") {
 			HP -= 10;
 			if (Random.Range(1,10) == 1) {
 				sparksPosition = new Vector3 (2.5f,-0.2f,0);
