@@ -9,6 +9,9 @@ public class BossScript : MonoBehaviour {
 	public Slider HPSlider;
 	public GameObject consecAttAmmo;
 	public GameObject sparks;
+	public GameObject electricSparks;
+	public GameObject fireSparks;
+	public GameObject acidSparks;
 	public GameObject explosion;
 	private Vector3 sparksPosition;
 	private GameObject leftWing;
@@ -71,8 +74,10 @@ public class BossScript : MonoBehaviour {
 		hpText.text = "10000 / " + HP.ToString ();
 		if(HP % 1000 == 0 && HP != 10000){
 			if(Random.Range(1,3) == 1){
+				colorChanger(0.2f,10);
 				Instantiate(bossShooting.HPCrate,transform.position,transform.rotation);
-			}else if(Random.Range(1,3) == 2){
+			}else {
+				colorChanger(0.2f,10);
 				Instantiate(bossShooting.rocketCrate, transform.position, transform.rotation);
 			}
 			HP -= 10;
@@ -215,7 +220,7 @@ public class BossScript : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter (Collider other){
-		if (other.tag == "playerBullet" || other.tag == "playerElectricBullet" || other.tag == "playerFireBullet" || other.tag == "playerAcidBullet") {
+		if (other.tag == "playerBullet") {
 			HP -= 10;
 			if (Random.Range(1,10) == 1) {
 				sparksPosition = new Vector3 (2.5f,-0.2f,0);
@@ -237,6 +242,81 @@ public class BossScript : MonoBehaviour {
 				sparksPosition = new Vector3 (-0.6f,0.25f,0);
 			}
 			Instantiate(sparks, sparksPosition + transform.position,transform.rotation);
+		}
+
+		if (other.tag == "playerElectricBullet"){
+			StartCoroutine ((takeElectricDmg()));
+
+			if (Random.Range(1,10) == 1) {
+				sparksPosition = new Vector3 (2.5f,-0.2f,0);
+			}else if (Random.Range(1,10) == 2){
+				sparksPosition = new Vector3 (2.9f,1f,0);
+			}else if (Random.Range(1,10) == 3){
+				sparksPosition = new Vector3 (1.1f,1.45f,0);
+			}else if (Random.Range(1,10) == 4){
+				sparksPosition = new Vector3 (-1.1f,1f,0);
+			}else if (Random.Range(1,10) == 5){
+				sparksPosition = new Vector3 (0,-0.75f,0);
+			}else if (Random.Range(1,10) == 6){
+				sparksPosition = new Vector3 (-0.2f,-2.5f,0);
+			}else if (Random.Range(1,10) == 7){
+				sparksPosition = new Vector3 (-2.8f,1.6f,0);
+			}else if (Random.Range(1,10) == 8){
+				sparksPosition = new Vector3 (-2.31f,-0.5f,0);
+			}else {
+				sparksPosition = new Vector3 (-0.6f,0.25f,0);
+			}
+			Instantiate(electricSparks, sparksPosition + transform.position,transform.rotation);
+		}
+
+		if (other.tag == "playerFireBullet") {
+			StartCoroutine (takeFireDmg());
+
+			if (Random.Range(1,10) == 1) {
+				sparksPosition = new Vector3 (2.5f,-0.2f,0);
+			}else if (Random.Range(1,10) == 2){
+				sparksPosition = new Vector3 (2.9f,1f,0);
+			}else if (Random.Range(1,10) == 3){
+				sparksPosition = new Vector3 (1.1f,1.45f,0);
+			}else if (Random.Range(1,10) == 4){
+				sparksPosition = new Vector3 (-1.1f,1f,0);
+			}else if (Random.Range(1,10) == 5){
+				sparksPosition = new Vector3 (0,-0.75f,0);
+			}else if (Random.Range(1,10) == 6){
+				sparksPosition = new Vector3 (-0.2f,-2.5f,0);
+			}else if (Random.Range(1,10) == 7){
+				sparksPosition = new Vector3 (-2.8f,1.6f,0);
+			}else if (Random.Range(1,10) == 8){
+				sparksPosition = new Vector3 (-2.31f,-0.5f,0);
+			}else {
+				sparksPosition = new Vector3 (-0.6f,0.25f,0);
+			}
+			Instantiate(fireSparks, sparksPosition + transform.position,transform.rotation);
+		}
+
+		if (other.tag == "playerAcidBullet") {
+			StartCoroutine (takeAcidDmg());
+
+			if (Random.Range(1,10) == 1) {
+				sparksPosition = new Vector3 (2.5f,-0.2f,0);
+			}else if (Random.Range(1,10) == 2){
+				sparksPosition = new Vector3 (2.9f,1f,0);
+			}else if (Random.Range(1,10) == 3){
+				sparksPosition = new Vector3 (1.1f,1.45f,0);
+			}else if (Random.Range(1,10) == 4){
+				sparksPosition = new Vector3 (-1.1f,1f,0);
+			}else if (Random.Range(1,10) == 5){
+				sparksPosition = new Vector3 (0,-0.75f,0);
+			}else if (Random.Range(1,10) == 6){
+				sparksPosition = new Vector3 (-0.2f,-2.5f,0);
+			}else if (Random.Range(1,10) == 7){
+				sparksPosition = new Vector3 (-2.8f,1.6f,0);
+			}else if (Random.Range(1,10) == 8){
+				sparksPosition = new Vector3 (-2.31f,-0.5f,0);
+			}else {
+				sparksPosition = new Vector3 (-0.6f,0.25f,0);
+			}
+			Instantiate(acidSparks, sparksPosition + transform.position,transform.rotation);
 		}
 
 		if (other.tag == "playerRocket") {
@@ -264,5 +344,26 @@ public class BossScript : MonoBehaviour {
 			HP -= 100;
 
 		}
+	}
+	IEnumerator takeFireDmg () {
+		for (int i=0; i <= 5; i++){
+			HP -= 5;
+			yield return new WaitForSeconds (0.5f);
+		}
+		StopCoroutine (takeFireDmg());
+	}
+	IEnumerator takeAcidDmg () {
+		for (int i=0;i <= 5; i++){
+			HP -= 10;
+			yield return new WaitForSeconds (0.5f);
+		}
+		StopCoroutine (takeAcidDmg());
+	}
+	IEnumerator takeElectricDmg (){
+		for (int i=0;i<=5;i++){
+			HP -= 5;
+			yield return new WaitForSeconds (0.5f);
+		}
+		StopCoroutine (takeElectricDmg ());
 	}
 }

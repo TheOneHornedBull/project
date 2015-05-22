@@ -1,12 +1,31 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class bossShieldScript : MonoBehaviour {
 	public int bShieldHP = 5000;
+	public Slider shieldSlider;
+	public Text shieldText;
+	GameObject shieldFill;
+
+	void Start () {
+		shieldFill = GameObject.Find ("BossShieldFill");
+	}
 
 	void Update () {
-	
+		shieldSlider.value = bShieldHP;
+		if (bShieldHP > 3500) {
+			shieldFill.GetComponent<Image>().color = new Color32 (0, 105, 105, 255);
+		} else if (bShieldHP < 3500 && bShieldHP > 1500) {
+			shieldFill.GetComponent<Image>().color = new Color32 (40, 160, 240, 255);
+		} else {
+			shieldFill.GetComponent<Image>().color = new Color32 (80, 140, 200, 255);
+		}
+
+		shieldText.text = "5000 / " + bShieldHP.ToString ();
+
 	}
+
 	void onTriggerEnter (Collider other){
 		if (other.tag == "playerBullet") {
 			bShieldHP -= 20;
@@ -27,7 +46,7 @@ public class bossShieldScript : MonoBehaviour {
 	}
 	IEnumerator takeAcidDmg () {
 		for (int i=0;i <= 4; i++){
-			bShieldHP -= 7;
+			bShieldHP -= 5;
 			yield return new WaitForSeconds (0.8f);
 		}
 		StopCoroutine (takeAcidDmg());
