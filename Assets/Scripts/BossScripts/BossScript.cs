@@ -41,19 +41,19 @@ public class BossScript : MonoBehaviour {
 	private int buckAttacksStarted=0;
 	private int consecAttacksStarted=0;
 	public int loopsDone=0;
-	consecutiveAmmo CA;
 
 	public void Start () {
-		HP = 10000;
+		HP = 7500;
 		useShield = false;
 		shield = GameObject.Find ("Shield");
 		useShield = false;
 		doBasicAttack = false;
 		hpFill = GameObject.Find ("BossFill");
+		leftWing = GameObject.Find ("leftWing");
+		rightWing = GameObject.Find ("rightWing");
 		bossShooting = GetComponent<bossShootingScript> ();
 		bossMovement = GetComponent<bossMovementScript> ();
 		StartCoroutine (shootingPhasesController());
-		CA = consecAttAmmo.GetComponent<consecutiveAmmo> ();
 		bossMovement = GetComponent<bossMovementScript> ();
 	}
 
@@ -62,30 +62,30 @@ public class BossScript : MonoBehaviour {
 		shieldOnOff ();
 		bossMovement.defaultMovement ();
 		HPSlider.value = HP;
-		if (HP >= 6000) {
+		if (HP >= 4000) {
 			hpFill.GetComponent<Image>().color = new Color32 (10, 255, 0, 255);
 		}
-		if (HP < 6000 && HP >= 2000) {
+		if (HP < 4000 && HP >= 1000) {
 			hpFill.GetComponent<Image>().color = new Color32 (255, 180, 40, 255);
 		}
-		if (HP < 2000) {
+		if (HP < 1000) {
 			hpFill.GetComponent<Image>().color = new Color32 (255, 0, 0, 255);
 		}
-		hpText.text = "10000 / " + HP.ToString ();
-		if(HP % 1000 == 0 && HP != 10000){
+		hpText.text = "7500 / " + HP.ToString ();
+		if(HP % 1000 == 0 && HP != 7500){
 			if(Random.Range(1,3) == 1){
-				colorChanger(0.2f,10);
+				StartCoroutine (colorChanger(0.2f,10));
 				Instantiate(bossShooting.HPCrate,transform.position,transform.rotation);
 			}else {
-				colorChanger(0.2f,10);
+				StartCoroutine (colorChanger(0.2f,10));
 				Instantiate(bossShooting.rocketCrate, transform.position, transform.rotation);
 			}
 			HP -= 10;
 		}
 		if (HP <= 0) {
-			leftWing.GetComponent<Rigidbody>().velocity = Random.insideUnitSphere;
+			leftWing.GetComponent<Rigidbody>().velocity = Random.insideUnitSphere * 10;
 			leftWing.GetComponent<Rigidbody>().velocity = (transform.up - transform.right)*10;
-			rightWing.GetComponent<Rigidbody>().velocity = Random.insideUnitSphere * 5;
+			rightWing.GetComponent<Rigidbody>().velocity = Random.insideUnitSphere * 10;
 			rightWing.GetComponent<Rigidbody>().velocity = (transform.up + transform.right)*10;
 			GetComponent<Rigidbody>().velocity = transform.up * 7;
 			GetComponent<Rigidbody>().velocity = Random.insideUnitSphere * 5;
@@ -345,6 +345,7 @@ public class BossScript : MonoBehaviour {
 
 		}
 	}
+
 	IEnumerator takeFireDmg () {
 		for (int i=0; i <= 5; i++){
 			HP -= 5;

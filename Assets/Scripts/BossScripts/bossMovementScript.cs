@@ -37,7 +37,7 @@ public class bossMovementScript : MonoBehaviour {
 				}
 			}
 			nextPosition = new Vector3 (bounds.x, 20, 0);
-			transform.position = Vector3.SmoothDamp (transform.position, nextPosition, ref vel, Time.deltaTime * timeToReachTarget, maxSpeed);
+			transform.position = Vector3.SmoothDamp (new Vector3 (transform.position.x, 20, 0), nextPosition, ref vel, Time.deltaTime * timeToReachTarget, maxSpeed);
 		}
 
 	}
