@@ -32,6 +32,8 @@ public class bossShootingScript : MonoBehaviour {
 	GameObject rightCover;
 	GameObject leftGun;
 	GameObject rightGun;
+    GameObject leftSpreadShotGunCenter;
+    GameObject rightSpreadShotGunCenter;
 	bossMovementScript bossMovement;
 	consecutiveAmmo CA;
 	bossShootingScript bShooting;
@@ -46,6 +48,8 @@ public class bossShootingScript : MonoBehaviour {
 		rightCover = GameObject.Find ("rightCover");
 		leftGun = GameObject.Find ("leftGun");
 		rightGun = GameObject.Find ("rightGun");
+        leftSpreadShotGunCenter = GameObject.Find("lSSCenter");
+        rightSpreadShotGunCenter = GameObject.Find("rSSCenter");
 		leftConsecCoverAnim = leftCover.GetComponent<Animator>();
 		rightConsecCoverAnim = rightCover.GetComponent<Animator>();
         leftConsecGunAnim = leftGun.GetComponent<Animator>();
@@ -79,31 +83,43 @@ public class bossShootingScript : MonoBehaviour {
 
 	public IEnumerator buckShotAttack (float _buckShotRate, int _buckShotNumber){
 
+
+        for (int i = 0; i <= 3; i++) {
+            leftSpreadShotGunCenter.GetComponent<Renderer>().material.color = new Color32(255,200,0,255);
+            rightSpreadShotGunCenter.GetComponent<Renderer>().material.color = new Color32(255, 200, 0, 255);
+            yield return new WaitForSeconds(0.2f);
+            leftSpreadShotGunCenter.GetComponent<Renderer>().material.color = new Color32(255, 0, 0, 255);
+            rightSpreadShotGunCenter.GetComponent<Renderer>().material.color = new Color32(255, 0, 0, 255);
+            yield return new WaitForSeconds(0.2f);
+        }
+        leftSpreadShotGunCenter.GetComponent<Renderer>().material.color = new Color32(255, 200, 0, 255);
+        rightSpreadShotGunCenter.GetComponent<Renderer>().material.color = new Color32(255, 200, 0, 255);
+
 			if (Random.Range (1, 4) == 1) {
-			Instantiate (farLeftLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
-			Instantiate (farLeftRBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
+			Instantiate (farLeftLBS, transform.position - new Vector3 (2.3f, 1.5f, 0), transform.rotation);
+            Instantiate(farLeftRBS, transform.position + new Vector3(2.3f, -1.5f, 0), transform.rotation);
 			yield return new WaitForSeconds (1);
 				for (int i =0; i <= _buckShotNumber; i ++) {
-					Instantiate (farLeftLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
-					Instantiate (farLeftRBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
+                    Instantiate(farLeftLBS, transform.position - new Vector3(2.3f, 1.5f, 0), transform.rotation);
+                    Instantiate(farLeftRBS, transform.position + new Vector3(2.3f, -1.5f, 0), transform.rotation);
 					yield return new WaitForSeconds (_buckShotRate);
 				}
 			} else if (Random.Range (1, 4) == 2) {
-				Instantiate (farRightLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
-				Instantiate (farRightRBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
+                Instantiate(farRightLBS, transform.position - new Vector3(2.3f, 1.5f, 0), transform.rotation);
+                Instantiate(farRightRBS, transform.position + new Vector3(2.3f, -1.5f, 0), transform.rotation);
 				yield return new WaitForSeconds (1);
 				for (int i =0; i <= _buckShotNumber; i ++) {
-					Instantiate (farRightLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
-					Instantiate (farRightRBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
+                    Instantiate(farRightLBS, transform.position - new Vector3(2.5f, 1.5f, 0), transform.rotation);
+                    Instantiate(farRightRBS, transform.position + new Vector3(2.5f, -1.5f, 0), transform.rotation);
 					yield return new WaitForSeconds (_buckShotRate);
 				}
 			} else {
-				Instantiate (middleLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
-				Instantiate (middleRBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
+                Instantiate(middleLBS, transform.position - new Vector3(2.3f, 1.5f, 0), transform.rotation);
+                Instantiate(middleRBS, transform.position + new Vector3(2.3f, -1.5f, 0), transform.rotation);
 				yield return new WaitForSeconds (1);
 				for (int i =0; i <= _buckShotNumber; i ++) {
-					Instantiate (middleLBS, transform.position - new Vector3 (2.7f, 1, 0), transform.rotation);
-					Instantiate (middleRBS, transform.position + new Vector3 (2.7f, -1, 0), transform.rotation);
+                    Instantiate(middleLBS, transform.position - new Vector3(2.3f, 1.5f, 0), transform.rotation);
+                    Instantiate(middleRBS, transform.position + new Vector3(2.3f, -1.5f, 0), transform.rotation);
 					yield return new WaitForSeconds (_buckShotRate);
 				}
 			}
@@ -118,9 +134,9 @@ public class bossShootingScript : MonoBehaviour {
 		}
 		leftConsecCoverAnim.SetBool("leftCoverConsec",true);
 		rightConsecCoverAnim.SetBool("rightCoverConsec",true);
-        yield return new WaitForSeconds(0.5f);
-        leftConsecGunAnim.SetBool("riseLeftConsecGun",true);
-        rightConsecGunAnim.SetBool("riseRightConsecGun",true);
+     //   yield return new WaitForSeconds(0.5f);
+     //   leftConsecGunAnim.SetBool("riseLeftConsecGun",true);
+     //  rightConsecGunAnim.SetBool("riseRightConsecGun",true);
 		yield return new WaitForSeconds (1);
 		for (int i = 0; i <= 3; i++) {
 			bossMovement.nextPosition = new Vector3 (x,20,0);
@@ -139,9 +155,9 @@ public class bossShootingScript : MonoBehaviour {
 			yield return new WaitForSeconds ((CA.fireRate * (CA.maxCount + CA.maxCount - 15)) + 4f);
 			x *= -1;
 		}
-        leftConsecGunAnim.SetBool("riseLeftConsecGun",false);
-        rightConsecGunAnim.SetBool("riseRightConsecGun",false);
-        yield return new WaitForSeconds(0.5f);
+       // leftConsecGunAnim.SetBool("riseLeftConsecGun",false);
+       // rightConsecGunAnim.SetBool("riseRightConsecGun",false);
+       // yield return new WaitForSeconds(0.5f);
 		leftConsecCoverAnim.SetBool("leftCoverConsec",false);
 		rightConsecCoverAnim.SetBool("rightCoverConsec",false);
 		yield return new WaitForSeconds (1);

@@ -22,7 +22,7 @@ public class bossShieldScript : MonoBehaviour {
 			shieldFill.GetComponent<Image>().color = new Color32 (80, 140, 200, 255);
 		}
 
-		shieldText.text = "5000 / " + bShieldHP.ToString ();
+        shieldText.text = bShieldHP.ToString() + " / " + bShieldHP.ToString();
 
 		if (bShieldHP <= 0) {
 			enabled = false;
@@ -30,7 +30,8 @@ public class bossShieldScript : MonoBehaviour {
 
 	}
 
-	void onTriggerEnter (Collider other){
+    void OnTriggerEnter(Collider other){
+
 		if (other.tag == "playerBullet") {
 			bShieldHP -= 20;
 		} else if (other.tag == "playerElectricBullet") {
@@ -41,6 +42,7 @@ public class bossShieldScript : MonoBehaviour {
 			StartCoroutine (takeAcidDmg());
 		}
 	}
+
 	IEnumerator takeFireDmg () {
 		for (int i=0; i <= 5; i++){
 			bShieldHP -= 5;

@@ -80,12 +80,25 @@ public class touchInput : MonoBehaviour {
 		if (other.tag == "RocketCrate") {
 			rockets = true;
 			rocketCount = 0;
-            if (Random.Range(1, 3) == 1) {
-                ps.bm = playerShooting.bulletModifier.fireBullet;
-            }else if (Random.Range(1, 3) == 2) {
-                ps.bm = playerShooting.bulletModifier.acidBullet;
+
+            if (ps.bm == playerShooting.bulletModifier.fireBullet){
+              if (  Random.Range (1,3) == 1) {
+                    ps.bm = playerShooting.bulletModifier.acidBullet;
+                }else {
+                    ps.bm = playerShooting.bulletModifier.electricBullet;
+                }
+            }else if (ps.bm == playerShooting.bulletModifier.acidBullet){
+                if (  Random.Range (1,3) == 1) {
+                    ps.bm = playerShooting.bulletModifier.fireBullet;
+                }else {
+                    ps.bm = playerShooting.bulletModifier.electricBullet;
+                }
             }else {
-                ps.bm = playerShooting.bulletModifier.electricBullet;
+                if (  Random.Range (1,3) == 1) {
+                    ps.bm = playerShooting.bulletModifier.fireBullet;
+                }else {
+                    ps.bm = playerShooting.bulletModifier.acidBullet;
+                }
             }
 		}
 

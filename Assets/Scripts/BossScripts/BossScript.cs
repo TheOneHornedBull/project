@@ -44,9 +44,8 @@ public class BossScript : MonoBehaviour {
 
 	public void Start () {
 		HP = 7500;
-		useShield = false;
 		shield = GameObject.Find ("Shield");
-		useShield = false;
+		useShield = true;
 		doBasicAttack = false;
 		hpFill = GameObject.Find ("BossFill");
 		leftWing = GameObject.Find ("leftWing");
@@ -159,17 +158,20 @@ public class BossScript : MonoBehaviour {
 				yield return new WaitForSeconds (1.5f);
 				bossMovement.move = true;
 				bossMovement.moveDefault = true;
-				useShield = false;
+                // useShield = false;
+				useShield = true;
 				doBasicAttack = true;
 				bossMovement.maxSpeed = 7;
 				yield return new WaitForSeconds (basicShotRate * basicAttackNumber + 1.5f);
+                // useShield = true;
 				useShield = true;
 				doBasicAttack = false;
 				bossMovement.maxSpeed = 15;
 				doArrowAttack = true;
 				yield return new WaitForSeconds (arrowShotRate * arrowShotNumber + 0.5f);
 				doArrowAttack = false;
-				useShield = false;
+                // useShield = false;
+				useShield = true;
 				bossMovement.moveDefault = false;
 				bossMovement.maxSpeed = 10;
 				bossMovement.nextPosition = new Vector3 (0,20,0);
@@ -192,7 +194,7 @@ public class BossScript : MonoBehaviour {
 				bossMovement.move = false;
 				yield return new WaitForSeconds (0.5f);
 				doBuckShotAttack = true;
-				yield return new WaitForSeconds (buckShotRate * buckShotNumber + 1.5f);
+				yield return new WaitForSeconds (buckShotRate * buckShotNumber + 3f);
 				doBuckShotAttack = false;
 				bossMovement.move = true;
 				bossMovement.maxSpeed = 30;

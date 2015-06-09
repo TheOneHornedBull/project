@@ -42,13 +42,4 @@ public class bossMovementScript : MonoBehaviour {
 
 	}
 
-	public IEnumerator buckShotAttackMove () {
-		move = false;
-		anim.SetBool ("buckShotAttackAnimBool", true);
-		yield return new WaitForSeconds (2);
-		anim.SetBool ("buckShotAttackAnimBool", false);
-		move = true;
-		StopCoroutine(buckShotAttackMove ());
-	}
-
 }
