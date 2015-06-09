@@ -25,12 +25,13 @@ public class bossShieldScript : MonoBehaviour {
 		shieldText.text = "5000 / " + bShieldHP.ToString ();
 
 		if (bShieldHP <= 0) {
-			enabled = false;
+            GetComponent<MeshRenderer>().enabled = false;
+            GetComponent<SphereCollider>().enabled = false;
 		}
 
 	}
 
-	void onTriggerEnter (Collider other){
+	void OnTriggerEnter (Collider other){
 		if (other.tag == "playerBullet") {
 			bShieldHP -= 20;
 		} else if (other.tag == "playerElectricBullet") {
