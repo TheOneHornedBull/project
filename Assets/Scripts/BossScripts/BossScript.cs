@@ -44,6 +44,7 @@ public class BossScript : MonoBehaviour {
 
 	public void Start () {
 		HP = 7500;
+		useShield = false;
 		shield = GameObject.Find ("Shield");
 		useShield = false;
 		doBasicAttack = false;
@@ -58,7 +59,7 @@ public class BossScript : MonoBehaviour {
 
 	public void FixedUpdate () {
 		shootingPhases ();
-		//shieldOnOff ();
+		shieldOnOff ();
 		bossMovement.defaultMovement ();
 		HPSlider.value = HP;
 		if (HP >= 4000) {
@@ -98,7 +99,7 @@ public class BossScript : MonoBehaviour {
 	}
 	
 	void shieldOnOff () {
-		if (shield) {
+		if (useShield) {
 			shield.GetComponent<MeshRenderer> ().enabled = true;
 			shield.GetComponent<SphereCollider> ().enabled = true;
 		} else {
