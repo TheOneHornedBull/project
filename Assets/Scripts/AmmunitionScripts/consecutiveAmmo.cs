@@ -7,8 +7,8 @@ public class consecutiveAmmo : MonoBehaviour {
 	public bool attackLeft = false;
 	public bool attackRight = false;
 	public float fireRate = 0.05f;
-	//public GameObject leftGun;
-   // public GameObject rightGun;
+	//GameObject leftGun;
+ 	//GameObject rightGun;
 
 	void Start () {
 		StartCoroutine(attack(fireRate, maxCount));
@@ -18,6 +18,8 @@ public class consecutiveAmmo : MonoBehaviour {
 	
 	IEnumerator attack(float fireRate, int count){
 		transform.rotation = Quaternion.Euler (0,0,0);
+		//leftGun.transform.position = Vector3.Lerp (leftGun.transform.position, leftGun.transform.position + new Vector3 (0,0.5f,0), 1);
+		//rightGun.transform.position = Vector3.Lerp (rightGun.transform.position, rightGun.transform.position + new Vector3 (0,0.5f,0), 1);
 		yield return new WaitForSeconds (1);
 		for (int i=0; i<= count - 20; i++) {
 			Instantiate(ammo, transform.position - new Vector3 (2.7f, 1,0)  /**leftGun.transform.position*/, transform.rotation);
@@ -51,6 +53,8 @@ public class consecutiveAmmo : MonoBehaviour {
 			}
 			yield return new WaitForSeconds (fireRate);
 		}
+		//leftGun.transform.position = Vector3.Lerp (leftGun.transform.position, leftGun.transform.position + new Vector3 (0,-0.5f,0), 1);
+		//rightGun.transform.position = Vector3.Lerp (rightGun.transform.position, rightGun.transform.position + new Vector3 (0,-0.5f,0), 1);
 		StopCoroutine (attack(fireRate, maxCount));
 	}
 

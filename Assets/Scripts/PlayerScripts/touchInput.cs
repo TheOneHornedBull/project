@@ -18,14 +18,12 @@ public class touchInput : MonoBehaviour {
 	RaycastHit hit;
 	GameObject fill;
 	bool isPaused;
-    playerShooting ps;
 
 	void Awake () {
 		Time.timeScale = 0;
 		isPaused = true;
 		fill = GameObject.Find ("PlayerFill");
 		playerBody = GameObject.Find ("playerBody");
-        ps = GetComponent<playerShooting>();
 	}
 	
 	void FixedUpdate () {
@@ -80,13 +78,6 @@ public class touchInput : MonoBehaviour {
 		if (other.tag == "RocketCrate") {
 			rockets = true;
 			rocketCount = 0;
-            if (Random.Range(1, 3) == 1) {
-                ps.bm = playerShooting.bulletModifier.fireBullet;
-            }else if (Random.Range(1, 3) == 2) {
-                ps.bm = playerShooting.bulletModifier.acidBullet;
-            }else {
-                ps.bm = playerShooting.bulletModifier.electricBullet;
-            }
 		}
 
 	}

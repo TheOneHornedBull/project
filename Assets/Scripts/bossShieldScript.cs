@@ -24,10 +24,6 @@ public class bossShieldScript : MonoBehaviour {
 
 		shieldText.text = "5000 / " + bShieldHP.ToString ();
 
-		if (bShieldHP <= 0) {
-			enabled = false;
-		}
-
 	}
 
 	void onTriggerEnter (Collider other){
