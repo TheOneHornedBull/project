@@ -45,6 +45,19 @@ public class playerShooting : MonoBehaviour {
 		}
 	}
 
+    public void SwitchBulletType() { 
+        if (bm == bulletModifier.acidBullet){
+            bm = bulletModifier.electricBullet;
+            bullet = electricBullet;
+        }else if (bm == bulletModifier.electricBullet) {
+            bm = bulletModifier.fireBullet;
+            bullet = fireBullet;
+        }else if (bm == bulletModifier.fireBullet) {
+            bm = bulletModifier.acidBullet;
+            bullet = acidBullet;
+        }
+    }
+
 		void rocketShooting () {
 		if (Time.time > nextRocketFire && useRockets == true && rocketCount <= 25 && dl.touching) {
 			nextRocketFire = Time.time + 0.4f;

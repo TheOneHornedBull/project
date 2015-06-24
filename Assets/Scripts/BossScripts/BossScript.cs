@@ -164,14 +164,14 @@ public class BossScript : MonoBehaviour {
 				bossMovement.maxSpeed = 7;
 				yield return new WaitForSeconds (basicShotRate * basicAttackNumber + 1.5f);
                 // useShield = true;
-				useShield = true;
+				// useShield = true;
 				doBasicAttack = false;
 				bossMovement.maxSpeed = 15;
 				doArrowAttack = true;
 				yield return new WaitForSeconds (arrowShotRate * arrowShotNumber + 0.5f);
 				doArrowAttack = false;
                 // useShield = false;
-				useShield = true;
+				// useShield = true;
 				bossMovement.moveDefault = false;
 				bossMovement.maxSpeed = 10;
 				bossMovement.nextPosition = new Vector3 (0,20,0);

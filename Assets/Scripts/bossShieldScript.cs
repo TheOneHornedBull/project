@@ -44,8 +44,9 @@ public class bossShieldScript : MonoBehaviour {
 	}
 
 	IEnumerator takeFireDmg () {
-		for (int i=0; i <= 5; i++){
+		for (int i=0; i <= 4; i++){
 			bShieldHP -= 5;
+            Debug.Log("fireDMG");
 			yield return new WaitForSeconds (0.5f);
 		}
 		StopCoroutine (takeFireDmg());
@@ -53,7 +54,8 @@ public class bossShieldScript : MonoBehaviour {
 	IEnumerator takeAcidDmg () {
 		for (int i=0;i <= 4; i++){
 			bShieldHP -= 5;
-			yield return new WaitForSeconds (0.8f);
+            Debug.Log("acidDMG");
+			yield return new WaitForSeconds (0.5f);
 		}
 		StopCoroutine (takeAcidDmg());
 	}
